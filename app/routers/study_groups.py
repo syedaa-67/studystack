@@ -3,13 +3,18 @@ from sqlmodel import Session, select
 from typing import List
 
 from app.database import get_session
-from app.models import StudyGroup
+from app.models import StudyGroup, User
 from app.schemas import StudyGroupCreate, StudyGroupRead
+from app.auth import get_current_user
 
 router = APIRouter(prefix="/study-groups", tags=["Study Groups"])
 
 @router.post("/", response_model=StudyGroupRead)
-def create_study_group(group: StudyGroupCreate, session: Session = Depends(get_session)):
+def create_study_group(
+    group: StudyGroupCreate,
+    session: Session = Depends(get_session),
+    current_user: User = Depends(get_current_user),
+):
     db_group = StudyGroup.from_orm(group)
     session.add(db_group)
     session.commit()
