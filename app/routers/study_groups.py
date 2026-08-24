@@ -1,11 +1,15 @@
-﻿from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 from typing import List
-
 from app.database import get_session
-from app.models import StudyGroup, User
-from app.schemas import StudyGroupCreate, StudyGroupRead
+from app.models import StudyGroup, Member, User
+from app.schemas import StudyGroupCreate, StudyGroupRead, StudyGroupDetail, LeaderboardResponse, LeaderboardEntry
 from app.auth import get_current_user
+from app.permissions import get_membership
+from app.models import Badge
+from app.models import PomodoroSession
+from datetime import datetime, timedelta
+from collections import defaultdict
 
 router = APIRouter(prefix="/study-groups", tags=["Study Groups"])
 
@@ -15,19 +19,103 @@ def create_study_group(
     session: Session = Depends(get_session),
     current_user: User = Depends(get_current_user),
 ):
-    db_group = StudyGroup.from_orm(group)
+    db_group = StudyGroup(**group.dict(), owner_id=current_user.id)
     session.add(db_group)
     session.commit()
     session.refresh(db_group)
+
+    owner_member = Member(
+        name=current_user.email.split("@")[0],
+        email=current_user.email,
+        role="owner",
+        group_id=db_group.id,
+        user_id=current_user.id,
+    )
+    session.add(owner_member)
+    session.commit()
+
     return db_group
 
 @router.get("/", response_model=List[StudyGroupRead])
-def list_study_groups(session: Session = Depends(get_session)):
-    return session.exec(select(StudyGroup)).all()
+def list_study_groups(
+    session: Session = Depends(get_session),
+    current_user: User = Depends(get_current_user),
+):
+    return session.exec(
+        select(StudyGroup)
+        .join(Member, Member.group_id == StudyGroup.id)
+        .where(Member.user_id == current_user.id)
+    ).all()
 
-@router.get("/{group_id}", response_model=StudyGroupRead)
-def get_study_group(group_id: int, session: Session = Depends(get_session)):
+@router.get("/{group_id}", response_model=StudyGroupDetail)
+def get_study_group(
+    group_id: int,
+    session: Session = Depends(get_session),
+    current_user: User = Depends(get_current_user),
+):
+    membership = get_membership(group_id, session, current_user)
     group = session.get(StudyGroup, group_id)
     if not group:
         raise HTTPException(status_code=404, detail="Study group not found")
-    return group
+    result = StudyGroupDetail.model_validate(group, from_attributes=True)
+    result.my_role = membership.role
+    return result
+
+
+
+
+
+
+@router.get("/{group_id}/leaderboard", response_model=LeaderboardResponse)
+def get_leaderboard(
+    group_id: int,
+    session: Session = Depends(get_session),
+    current_user: User = Depends(get_current_user),
+):
+    get_membership(group_id, session, current_user)
+    members = session.exec(select(Member).where(Member.group_id == group_id)).all()
+
+    entries = []
+    for m in members:
+        badges = session.exec(select(Badge).where(Badge.member_id == m.id)).all()
+        entries.append(LeaderboardEntry(
+            member_id=m.id,
+            member_name=m.name,
+            role=m.role,
+            points=m.points,
+            badges=[b.name for b in badges],
+        ))
+
+    entries.sort(key=lambda e: e.points, reverse=True)
+    return LeaderboardResponse(entries=entries)
+
+
+
+@router.get("/{group_id}/focus-trend")
+def get_focus_trend(
+    group_id: int,
+    session: Session = Depends(get_session),
+    current_user: User = Depends(get_current_user),
+):
+    get_membership(group_id, session, current_user)
+
+    sessions = session.exec(
+        select(PomodoroSession)
+        .where(PomodoroSession.group_id == group_id)
+        .where(PomodoroSession.duration_seconds != None)
+    ).all()
+
+    minutes_by_day = defaultdict(int)
+    for s in sessions:
+        day = s.started_at.date().isoformat()
+        minutes_by_day[day] += round((s.duration_seconds or 0) / 60)
+
+    today = datetime.utcnow().date()
+    days = [(today - timedelta(days=i)) for i in range(6, -1, -1)]
+
+    trend = [
+        {"day": d.strftime("%a"), "date": d.isoformat(), "minutes": minutes_by_day.get(d.isoformat(), 0)}
+        for d in days
+    ]
+
+    return {"trend": trend}

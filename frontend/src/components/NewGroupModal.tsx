@@ -29,17 +29,17 @@ export default function NewGroupModal({ onClose, onCreated }: Props) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
       <form
         onSubmit={handleSubmit}
-        className="bg-white text-dark rounded-xl2 p-8 w-full max-w-md flex flex-col gap-4"
+        className="bg-slate-800/95 backdrop-blur-lg border border-white/10 text-slate-100 rounded-xl p-8 w-full max-w-md flex flex-col gap-4"
       >
         <div className="flex justify-between items-center mb-2">
           <h2 className="text-xl font-bold">New Study Group</h2>
           <button
             type="button"
             onClick={onClose}
-            className="text-gray-400 hover:text-dark text-xl leading-none"
+            className="text-slate-400 hover:text-white text-xl leading-none"
           >
             &times;
           </button>
@@ -51,7 +51,7 @@ export default function NewGroupModal({ onClose, onCreated }: Props) {
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
-          className="border rounded-full px-4 py-3 outline-none focus:border-brand"
+          className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 outline-none focus:border-yellow-400/50 text-slate-100 placeholder:text-slate-500"
         />
         <input
           type="text"
@@ -59,22 +59,22 @@ export default function NewGroupModal({ onClose, onCreated }: Props) {
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
           required
-          className="border rounded-full px-4 py-3 outline-none focus:border-brand"
+          className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 outline-none focus:border-yellow-400/50 text-slate-100 placeholder:text-slate-500"
         />
         <textarea
           placeholder="Description (optional)"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="border rounded-2xl px-4 py-3 outline-none focus:border-brand resize-none"
+          className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 outline-none focus:border-yellow-400/50 text-slate-100 placeholder:text-slate-500 resize-none"
           rows={3}
         />
 
-        {error && <p className="text-red-500 text-sm">{error}</p>}
+        {error && <p className="text-red-400 text-sm">{error}</p>}
 
         <button
           type="submit"
           disabled={saving}
-          className="bg-brand text-dark font-semibold rounded-full py-3 mt-2 hover:opacity-90 disabled:opacity-50"
+          className="bg-yellow-400 text-slate-900 font-semibold rounded-lg py-3 mt-2 hover:bg-yellow-300 disabled:opacity-50 transition"
         >
           {saving ? "Creating..." : "Create Group"}
         </button>

@@ -1,151 +1,177 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../api/client";
+import axios from "axios";
+import { ThemeSwitcher } from "../components/ThemeSwitcher";
 import NewGroupModal from "../components/NewGroupModal";
-
-interface StudyGroup {
-  id: number;
-  name: string;
-  subject: string;
-  description: string | null;
-  created_at: string;
-}
-
-interface Deadline {
-  id: number;
-  title: string;
-  due_date: string;
-  completed: boolean;
-  group_id: number;
-}
+import NotificationBell from "../components/NotificationBell";
 
 export default function Dashboard() {
-  const [groups, setGroups] = useState<StudyGroup[]>([]);
-  const [deadlines, setDeadlines] = useState<Deadline[]>([]);
+  const [groups, setGroups] = useState([]);
+  const [deadlines, setDeadlines] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
-  const loadData = () => {
-    Promise.all([api.get("/study-groups/"), api.get("/deadlines/")])
-      .then(([groupsRes, deadlinesRes]) => {
-        setGroups(groupsRes.data);
-        setDeadlines(deadlinesRes.data);
-      })
-      .catch(() => navigate("/"))
-      .finally(() => setLoading(false));
+  const API_URL = "https://studystack-z2b3.onrender.com";
+
+  const loadData = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const headers = { Authorization: "Bearer " + token };
+      const groupsRes = await axios.get(API_URL + "/study-groups/", { headers });
+      const deadlinesRes = await axios.get(API_URL + "/deadlines/", { headers });
+      
+      setGroups(groupsRes.data);
+      setDeadlines(deadlinesRes.data);
+      console.log("Groups loaded:", groupsRes.data);
+      console.log("Deadlines loaded:", deadlinesRes.data);
+    } catch (error) {
+      console.error("Error loading data:", error);
+      if (error.response && error.response.status === 401) {
+        localStorage.removeItem("token");
+        navigate("/login");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/");
-      return;
-    }
     loadData();
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/");
+    navigate("/login");
   };
 
   const upcoming = deadlines
     .filter((d) => !d.completed)
-    .sort((a, b) => new Date(a.due_date).getTime() - new Date(b.due_date).getTime())
+    .sort((a, b) => new Date(a.due_date) - new Date(b.due_date))
     .slice(0, 5);
 
+  if (loading) {
+    return <div style={{ background: "var(--bg-app)", color: "var(--text-primary)", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>Loading...</div>;
+  }
+
   return (
-    <div className="min-h-screen bg-dark text-white p-8">
-      <div className="flex justify-between items-center mb-10">
-        <h1 className="text-3xl font-bold">
-          Study<span className="text-brand">Stack</span>
+    <div style={{ background: "var(--bg-app)", color: "var(--text-primary)", minHeight: "100vh", padding: "2rem" }}>
+      {/* Header */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem", gap: "1rem" }}>
+        <h1 style={{ fontSize: "1.875rem", fontWeight: "bold" }}>
+          Study<span style={{ color: "var(--accent-yellow)" }}>Stack</span>
         </h1>
-        <button
-          onClick={handleLogout}
-          className="border border-white/20 rounded-full px-5 py-2 text-sm hover:bg-white hover:text-dark transition"
-        >
-          Log Out
-        </button>
-      </div>
-
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
-        <div className="bg-panel rounded-xl2 p-5">
-          <p className="text-3xl font-bold text-brand">{groups.length}</p>
-          <p className="text-gray-400 text-sm mt-1">Study Groups</p>
-        </div>
-        <div className="bg-panel rounded-xl2 p-5">
-          <p className="text-3xl font-bold text-brand">{deadlines.length}</p>
-          <p className="text-gray-400 text-sm mt-1">Total Deadlines</p>
-        </div>
-        <div className="bg-panel rounded-xl2 p-5">
-          <p className="text-3xl font-bold text-brand">{upcoming.length}</p>
-          <p className="text-gray-400 text-sm mt-1">Upcoming</p>
-        </div>
-        <div className="bg-panel rounded-xl2 p-5">
-          <p className="text-3xl font-bold text-brand">
-            {deadlines.filter((d) => d.completed).length}
-          </p>
-          <p className="text-gray-400 text-sm mt-1">Completed</p>
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <ThemeSwitcher />
+          <NotificationBell />
+          <button
+            onClick={handleLogout}
+            style={{
+              padding: "0.5rem 1rem",
+              fontSize: "0.875rem",
+              border: "1px solid var(--border-subtle)",
+              borderRadius: "0.5rem",
+              background: "transparent",
+              color: "var(--text-primary)",
+              cursor: "pointer"
+            }}
+          >
+            Log Out
+          </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold">Your Study Groups</h2>
+      {/* Stats */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1rem", marginBottom: "2rem" }}>
+        <div style={{ background: "var(--bg-card-yellow)", padding: "1.25rem", borderRadius: "var(--radius-card)" }}>
+          <p style={{ fontSize: "1.875rem", fontWeight: "bold" }}>{groups.length}</p>
+          <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>Study Groups</p>
+        </div>
+        <div style={{ background: "var(--bg-card-pink)", padding: "1.25rem", borderRadius: "var(--radius-card)" }}>
+          <p style={{ fontSize: "1.875rem", fontWeight: "bold" }}>{deadlines.length}</p>
+          <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>Total Deadlines</p>
+        </div>
+        <div style={{ background: "var(--bg-card-blue)", padding: "1.25rem", borderRadius: "var(--radius-card)" }}>
+          <p style={{ fontSize: "1.875rem", fontWeight: "bold" }}>{upcoming.length}</p>
+          <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>Upcoming</p>
+        </div>
+        <div style={{ background: "var(--bg-card-sage)", padding: "1.25rem", borderRadius: "var(--radius-card)" }}>
+          <p style={{ fontSize: "1.875rem", fontWeight: "bold" }}>{deadlines.filter((d) => d.completed).length}</p>
+          <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>Completed</p>
+        </div>
+      </div>
+
+      {/* Groups and Deadlines */}
+      <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "2rem" }}>
+        <div>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
+            <h2 style={{ fontSize: "1.25rem", fontWeight: "600" }}>Your Study Groups</h2>
             <button
               onClick={() => setShowModal(true)}
-              className="bg-brand text-dark font-semibold rounded-full px-6 py-3 hover:opacity-90"
+              style={{
+                padding: "0.75rem 1.5rem",
+                fontWeight: "600",
+                borderRadius: "0.5rem",
+                background: "var(--accent-yellow)",
+                color: "#000",
+                border: "none",
+                cursor: "pointer"
+              }}
             >
               + New Group
             </button>
           </div>
 
-          {loading ? (
-            <p className="text-gray-400">Loading...</p>
-          ) : groups.length === 0 ? (
-            <div className="bg-panel rounded-xl2 p-8 text-center text-gray-400">
-              No study groups yet. Create your first one.
+          {groups.length === 0 ? (
+            <div style={{ background: "var(--bg-card)", padding: "2rem", textAlign: "center", borderRadius: "var(--radius-card)" }}>
+              <p style={{ color: "var(--text-secondary)" }}>No study groups yet. Create your first one.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem" }}>
               {groups.map((group) => (
                 <div
                   key={group.id}
-                  className="bg-card rounded-xl2 p-6 flex flex-col gap-2 hover:-translate-y-1 transition cursor-pointer border border-white/5"
+                  onClick={() => navigate("/groups/" + group.id)}
+                  style={{
+                    background: "var(--bg-card)",
+                    padding: "1.5rem",
+                    borderRadius: "var(--radius-card)",
+                    border: "1px solid var(--border-subtle)",
+                    cursor: "pointer",
+                    transition: "transform 0.2s"
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-2px)"}
+                  onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"}
                 >
-                  <span className="bg-brand text-dark text-xs font-semibold w-fit px-3 py-1 rounded-full">
+                  <span style={{ fontSize: "0.75rem", fontWeight: "600", background: "var(--accent-yellow)", color: "#000", padding: "0.25rem 0.75rem", borderRadius: "9999px" }}>
                     {group.subject}
                   </span>
-                  <h3 className="text-lg font-bold mt-2">{group.name}</h3>
-                  <p className="text-gray-400 text-sm">
-                    {group.description || "No description"}
-                  </p>
+                  <h3 style={{ fontSize: "1.125rem", fontWeight: "bold", marginTop: "0.5rem" }}>{group.name}</h3>
+                  <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>{group.description || "No description"}</p>
                 </div>
               ))}
             </div>
           )}
         </div>
 
+        {/* Upcoming Deadlines */}
         <div>
-          <h2 className="text-xl font-semibold mb-6">Upcoming Deadlines</h2>
-          <div className="bg-panel rounded-xl2 p-5 flex flex-col gap-3">
+          <h2 style={{ fontSize: "1.25rem", fontWeight: "600", marginBottom: "1.5rem" }}>Upcoming Deadlines</h2>
+          <div style={{ background: "var(--bg-card)", padding: "1.25rem", borderRadius: "var(--radius-card)", border: "1px solid var(--border-subtle)" }}>
             {upcoming.length === 0 ? (
-              <p className="text-gray-400 text-sm">No upcoming deadlines.</p>
+              <p style={{ color: "var(--text-secondary)" }}>No upcoming deadlines.</p>
             ) : (
               upcoming.map((d) => (
-                <div
-                  key={d.id}
-                  className="bg-card rounded-xl p-4 flex justify-between items-center border border-white/5"
-                >
-                  <div>
-                    <p className="font-medium text-sm">{d.title}</p>
-                    <p className="text-gray-500 text-xs mt-1">
-                      {new Date(d.due_date).toLocaleDateString()}
-                    </p>
-                  </div>
-                  <span className="w-2 h-2 rounded-full bg-brand"></span>
+                <div key={d.id} style={{ background: "var(--bg-card-blue)", padding: "0.75rem", borderRadius: "16px", marginBottom: "0.5rem" }}>
+                  <p style={{ fontWeight: "500", fontSize: "0.875rem" }}>{d.title}</p>
+                  <p style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>
+                    {new Date(d.due_date).toLocaleDateString()}
+                  </p>
                 </div>
               ))
             )}
@@ -153,12 +179,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {showModal && (
-        <NewGroupModal
-          onClose={() => setShowModal(false)}
-          onCreated={loadData}
-        />
-      )}
+      {showModal && <NewGroupModal onClose={() => setShowModal(false)} onCreated={loadData} />}
     </div>
   );
 }
