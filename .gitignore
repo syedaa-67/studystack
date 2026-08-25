@@ -8,3 +8,5 @@ studystack.db
 .env
 .env key.txt
 studystack.db
+node_modules/
+studystack/
