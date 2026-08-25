@@ -13,23 +13,28 @@ cursor.execute('DELETE FROM badge')
 cursor.execute('DELETE FROM member')
 cursor.execute('DELETE FROM studygroup')
 conn.commit()
-print('Ã¢Å“â€¦ Cleared data')
+print('ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Cleared data')
 
 # Create test user
 password_hash = bcrypt.hashpw(b'syeda123', bcrypt.gensalt()).decode('utf-8')
 now = datetime.now().isoformat()
 
+cursor.execute('DELETE FROM user')
+cursor.execute('INSERT INTO user (email, hashed_password, created_at) VALUES (?, ?, ?)',
+               ('syeda@test.com', password_hash, now))
+user_id = cursor.lastrowid
+
 # Create group
 cursor.execute('INSERT INTO studygroup (name, subject, created_at) VALUES (?, ?, ?)',
                ('Data Science Study Group', 'Data Science', now))
 group_id = cursor.lastrowid
-print('Ã¢Å“â€¦ Created group')
+print('ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Created group')
 
 # Create owner
-cursor.execute('INSERT INTO member (name, email, password_hash, role, points, group_id) VALUES (?, ?, ?, ?, ?, ?)',
-               ('Test User', 'syeda@test.com', password_hash, 'admin', 45, group_id))
+cursor.execute('INSERT INTO member (name, email, role, points, group_id, user_id) VALUES (?, ?, ?, ?, ?, ?)',
+               ('Test User', 'syeda@test.com', 'admin', 45, group_id, user_id))
 owner_id = cursor.lastrowid
-print('Ã¢Å“â€¦ Created owner')
+print('ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Created owner')
 
 # Update group owner
 cursor.execute('UPDATE studygroup SET owner_id = ? WHERE id = ?', (owner_id, group_id))
@@ -45,7 +50,7 @@ for name, email, role, points in members:
     cursor.execute('INSERT INTO member (name, email, role, points, group_id) VALUES (?, ?, ?, ?, ?)',
                    (name, email, role, points, group_id))
     member_ids.append(cursor.lastrowid)
-print(f'Ã¢Å“â€¦ Created {len(member_ids)} members')
+print(f'ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Created {len(member_ids)} members')
 
 # Add deadlines
 deadlines = [
@@ -61,7 +66,7 @@ deadlines = [
 for title, desc, due_date, completed, assigned_to in deadlines:
     cursor.execute('INSERT INTO deadline (title, description, due_date, completed, assigned_to_id, group_id) VALUES (?, ?, ?, ?, ?, ?)',
                    (title, desc, due_date, completed, assigned_to, group_id))
-print(f'Ã¢Å“â€¦ Created {len(deadlines)} deadlines')
+print(f'ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Created {len(deadlines)} deadlines')
 
 # Add resources
 resources = [
@@ -72,23 +77,23 @@ resources = [
 for title, desc, url, content, resource_type, created_by in resources:
     cursor.execute('INSERT INTO resource (title, description, url, content, resource_type, group_id, created_by_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
                    (title, desc, url, content, resource_type, group_id, created_by, now))
-print(f'Ã¢Å“â€¦ Created {len(resources)} resources')
+print(f'ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Created {len(resources)} resources')
 
 # Add badges
 badges = [
-    ('Early Bird', 'Completed a deadline early', 'Ã°Å¸ÂÂ¦', 10, owner_id),
-    ('Collaborator', 'Added resources to the group', 'Ã°Å¸Â¤Â', 5, member_ids[0]),
-    ('Deadline Master', 'Completed 5 deadlines on time', 'Ã°Å¸Å½Â¯', 20, member_ids[1]),
+    ('Early Bird', 'Completed a deadline early', 'ÃƒÂ°Ã…Â¸Ã‚ÂÃ‚Â¦', 10, owner_id),
+    ('Collaborator', 'Added resources to the group', 'ÃƒÂ°Ã…Â¸Ã‚Â¤Ã‚Â', 5, member_ids[0]),
+    ('Deadline Master', 'Completed 5 deadlines on time', 'ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â¯', 20, member_ids[1]),
 ]
 for name, desc, icon, points, member_id in badges:
     cursor.execute('INSERT INTO badge (name, description, icon, points, member_id) VALUES (?, ?, ?, ?, ?)',
                    (name, desc, icon, points, member_id))
-print(f'Ã¢Å“â€¦ Created {len(badges)} badges')
+print(f'ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Created {len(badges)} badges')
 
 conn.commit()
 conn.close()
 
 print()
-print('Ã°Å¸â€œÂ§ Login with: test@test.com')
-print('Ã°Å¸â€â€˜ Password: syeda123')
-print('Ã°Å¸Å’Â± Database seeding complete!')
+print('ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â§ Login with: test@test.com')
+print('ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬Ëœ Password: syeda123')
+print('ÃƒÂ°Ã…Â¸Ã…â€™Ã‚Â± Database seeding complete!')
