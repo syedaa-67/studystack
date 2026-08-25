@@ -38,6 +38,8 @@ app.include_router(analytics.router)
 app.include_router(resources.router)
 app.include_router(ai.router)
 app.include_router(notifications.router)
+import os
+os.makedirs("app/uploads", exist_ok=True)
 app.mount("/uploads", StaticFiles(directory="app/uploads"), name="uploads")
 
 @app.get("/")
