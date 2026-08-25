@@ -1,4 +1,4 @@
-﻿import sqlite3
+import sqlite3
 from datetime import datetime, timedelta
 import bcrypt
 
@@ -16,7 +16,7 @@ conn.commit()
 print('✅ Cleared data')
 
 # Create test user
-password_hash = bcrypt.hashpw(b'test123', bcrypt.gensalt()).decode('utf-8')
+password_hash = bcrypt.hashpw(b'syeda123', bcrypt.gensalt()).decode('utf-8')
 now = datetime.now().isoformat()
 
 # Create group
@@ -90,5 +90,5 @@ conn.close()
 
 print()
 print('📧 Login with: test@test.com')
-print('🔑 Password: test123')
+print('🔑 Password: syeda123')
 print('🌱 Database seeding complete!')
