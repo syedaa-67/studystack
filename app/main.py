@@ -50,7 +50,7 @@ app.include_router(ws.router)
 
 @app.get("/dev/seed")
 def run_seed(secret: str = ""):
-    if secret != "syeda-seed-2026":
+    if secret != "jxHKH9RifedE8v3rWbSBm6njapB_XBg48uXPYwOtayg":
         return {"error": "unauthorized"}
     import subprocess
     result = subprocess.run(["python", "app/seed.py"], capture_output=True, text=True)
