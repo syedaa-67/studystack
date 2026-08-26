@@ -1,3 +1,7 @@
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+
 import random
 from datetime import datetime, timedelta
 from sqlmodel import Session, select, delete
