@@ -1,28 +1,48 @@
 name: Docker CI
-
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-
 jobs:
-  build-and-test:
+  test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install backend dependencies
+        working-directory: backend
+        run: pip install -r requirements.txt
+      - name: Run pytest
+        working-directory: backend
+        run: pytest
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+      - name: Type-check and build frontend
+        working-directory: frontend
+        run: npm run build
+  build-and-test:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
       - name: Build images via docker compose
         run: docker compose build
-
       - name: Run docker compose up
         run: docker compose up -d
         env:
           SECRET_KEY: dev-secret-ci
           GEMINI_API_KEY: dummy-key-for-ci
-
       - name: Wait for backend to be healthy
         run: |
           for i in {1..10}; do
@@ -30,14 +50,11 @@ jobs:
             echo "Waiting for backend..."
             sleep 3
           done
-
       - name: Show running containers
         run: docker ps
-
       - name: Show logs on failure
         if: failure()
         run: docker compose logs
-
       - name: Tear down
         if: always()
         run: docker compose down
