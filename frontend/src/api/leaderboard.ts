@@ -1,4 +1,4 @@
-import api from "./client";
+﻿import api from "./client";
 import type { LeaderboardResponse } from "../components/dashboard/types";
 
 export function fetchLeaderboard(groupId: string | number) {

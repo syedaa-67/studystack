@@ -1,18 +1,34 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ThemeSwitcher } from "../components/ThemeSwitcher";
 import NewGroupModal from "../components/NewGroupModal";
 import NotificationBell from "../components/NotificationBell";
 
+interface Group {
+  id: number;
+  name: string;
+  subject?: string;
+  description?: string;
+  [key: string]: any;
+}
+
+interface Deadline {
+  id: number;
+  title: string;
+  due_date: string;
+  completed: boolean;
+  [key: string]: any;
+}
+
 export default function Dashboard() {
-  const [groups, setGroups] = useState([]);
-  const [deadlines, setDeadlines] = useState([]);
+  const [groups, setGroups] = useState<Group[]>([]);
+  const [deadlines, setDeadlines] = useState<Deadline[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
-  const API_URL = "https://studystack-z2b3.onrender.com";
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const loadData = async () => {
     const token = localStorage.getItem("token");
@@ -32,7 +48,7 @@ export default function Dashboard() {
       console.log("Deadlines loaded:", deadlinesRes.data);
     } catch (error) {
       console.error("Error loading data:", error);
-      if (error.response && error.response.status === 401) {
+      if (axios.isAxiosError(error) && error.response && error.response.status === 401) {
         localStorage.removeItem("token");
         navigate("/login");
       }
@@ -52,7 +68,7 @@ export default function Dashboard() {
 
   const upcoming = deadlines
     .filter((d) => !d.completed)
-    .sort((a, b) => new Date(a.due_date) - new Date(b.due_date))
+    .sort((a, b) => new Date(a.due_date).getTime() - new Date(b.due_date).getTime())
     .slice(0, 5);
 
   if (loading) {

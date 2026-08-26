@@ -1,8 +1,7 @@
-// src/components/ThemeSettings.tsx
-import React from 'react';
+﻿import React from 'react';
 import { useTheme } from '../context/ThemeContext';
-import { ThemeMode, ThemeAddon } from '../types/theme';
-import { X, Moon, Sun, Palette, Eye, Waves, Box, Zap, Accessibility, Sparkles, Layers } from 'lucide-react';
+import type { ThemeMode } from '../types/theme';
+import { X, Moon, Sun } from 'lucide-react';
 
 interface ThemeSettingsProps {
   isOpen: boolean;
@@ -12,23 +11,12 @@ interface ThemeSettingsProps {
 const modeOptions: { value: ThemeMode; label: string; icon: React.ReactNode }[] = [
   { value: 'dark', label: 'Dark', icon: <Moon size={20} /> },
   { value: 'light', label: 'Light', icon: <Sun size={20} /> },
-  { value: 'sepia', label: 'Sepia', icon: <Palette size={20} /> },
   { value: 'midnight', label: 'Midnight', icon: <Moon size={20} className="text-indigo-400" /> },
   { value: 'sunset', label: 'Sunset', icon: <Sun size={20} className="text-orange-400" /> },
 ];
 
-const addonOptions: { value: ThemeAddon; label: string; icon: React.ReactNode; description: string }[] = [
-  { value: 'glass', label: 'Glass', icon: <Waves size={18} />, description: 'Frosted glass effect' },
-  { value: 'bento', label: 'Bento', icon: <Box size={18} />, description: 'Bento box layout' },
-  { value: 'animations', label: 'Animations', icon: <Zap size={18} />, description: 'Smooth animations' },
-  { value: 'pastel', label: 'Pastel', icon: <Sparkles size={18} />, description: 'Pastel color palette' },
-  { value: 'vibrant', label: 'Vibrant', icon: <Layers size={18} />, description: 'Vibrant colors' },
-  { value: 'highContrast', label: 'High Contrast', icon: <Eye size={18} />, description: 'Enhanced readability' },
-  { value: 'reducedMotion', label: 'Reduced Motion', icon: <Accessibility size={18} />, description: 'No animations' },
-];
-
 export const ThemeSettings: React.FC<ThemeSettingsProps> = ({ isOpen, onClose }) => {
-  const { theme, setMode, toggleAddon, hasAddon } = useTheme();
+  const { mode, setMode } = useTheme();
 
   if (!isOpen) return null;
 
@@ -46,44 +34,19 @@ export const ThemeSettings: React.FC<ThemeSettingsProps> = ({ isOpen, onClose })
         </div>
 
         {/* Mode Selection */}
-        <div className="mb-8">
+        <div>
           <h3 className="text-sm font-semibold text-text-secondary mb-4">Color Mode</h3>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {modeOptions.map(({ value, label, icon }) => (
               <button
                 key={value}
                 onClick={() => { setMode(value); onClose(); }}
-                className={`p-4 rounded-xl flex flex-col items-center gap-2 transition-all ${theme.mode === value ? 'bg-white/10 ring-1 ring-accent-yellow' : 'hover:bg-white/5'}`}
+                className={`p-4 rounded-xl flex flex-col items-center gap-2 transition-all ${mode === value ? 'bg-white/10 ring-1 ring-accent-yellow' : 'hover:bg-white/5'}`}
               >
                 {icon}
                 <span className="text-sm font-medium text-text-primary">{label}</span>
-                {theme.mode === value && (
+                {mode === value && (
                   <div className="w-2 h-2 rounded-full bg-accent-yellow" />
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Addons */}
-        <div>
-          <h3 className="text-sm font-semibold text-text-secondary mb-4">Addons</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {addonOptions.map(({ value, label, icon, description }) => (
-              <button
-                key={value}
-                onClick={() => toggleAddon(value)}
-                className={`p-4 rounded-xl flex items-start gap-3 transition-all text-left ${hasAddon(value) ? 'bg-white/10 ring-1 ring-accent-yellow' : 'hover:bg-white/5'}`}
-              >
-                <div className={`p-2 rounded-lg shrink-0 ${hasAddon(value) ? 'bg-accent-yellow/20' : 'bg-white/5'}`}>
-                  {icon}
-                </div>
-                <div>
-                  <div className="font-medium text-text-primary">{label}</div>
-                  <div className="text-xs text-text-secondary">{description}</div>
-                </div>
-                {hasAddon(value) && (
-                  <div className="ml-auto w-2 h-2 rounded-full bg-accent-yellow mt-1" />
                 )}
               </button>
             ))}

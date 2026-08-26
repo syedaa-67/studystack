@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import type { ThemeMode } from '../types/theme';
-import { Moon, Sun, Palette, ChevronDown } from 'lucide-react';
+import { Moon, Sun, ChevronDown } from 'lucide-react';
 
 const modeIcons: Record<ThemeMode, React.ReactNode> = {
   dark: <Moon size={18} />,
   light: <Sun size={18} />,
-  sepia: <Palette size={18} />,
   midnight: <Moon size={18} className="text-indigo-400" />,
   sunset: <Sun size={18} className="text-orange-400" />
 };
@@ -14,7 +13,6 @@ const modeIcons: Record<ThemeMode, React.ReactNode> = {
 const modeLabels: Record<ThemeMode, string> = {
   dark: 'Dark',
   light: 'Light',
-  sepia: 'Sepia',
   midnight: 'Midnight',
   sunset: 'Sunset'
 };
@@ -23,7 +21,7 @@ export const ThemeToggle: React.FC = () => {
   const { mode, setMode } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
 
-  const modes: ThemeMode[] = ['dark', 'light', 'sepia', 'midnight', 'sunset'];
+  const modes: ThemeMode[] = ['dark', 'light', 'midnight', 'sunset'];
 
   return (
     <div className="relative">

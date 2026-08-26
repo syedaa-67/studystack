@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { listResources } from "../api/resources";
 import type { ResourceRead } from "../api/resources";
 import NewResourceModal from "./NewResourceModal";

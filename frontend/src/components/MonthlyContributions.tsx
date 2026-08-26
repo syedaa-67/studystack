@@ -1,4 +1,4 @@
-interface Member {
+﻿interface Member {
   id: number;
   name: string;
 }

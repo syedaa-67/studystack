@@ -1,4 +1,4 @@
-export interface LeaderboardEntry {
+﻿export interface LeaderboardEntry {
   member_id: number;
   member_name: string;
   role: string;

@@ -1,5 +1,6 @@
-// src/context/ThemeContext.tsx
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+﻿// src/context/ThemeContext.tsx
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import type { ReactNode } from 'react';
 import type { ThemeMode } from '../types/theme';
 interface ThemeContextType {
   mode: ThemeMode;

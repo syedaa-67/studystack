@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { fetchAnalytics } from "../api/analytics";
 import api from "../api/client";
@@ -10,8 +10,6 @@ import {
   Cell,
   Tooltip,
   ResponsiveContainer,
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
