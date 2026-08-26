@@ -17,7 +17,7 @@ const bgMap: Record<StatCardProps["accent"], string> = {
 export default function StatCard({ label, value, icon, accent }: StatCardProps) {
   return (
     <div
-      className="p-5 flex flex-col justify-between transition-all duration-300 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
+      className="p-5 flex flex-col justify-between transition-all duration-300 "
       style={{
         background: "var(--bg-card)",
         border: "1px solid var(--border-subtle)",
@@ -25,19 +25,19 @@ export default function StatCard({ label, value, icon, accent }: StatCardProps) 
         borderRadius: "var(--radius-card)",
       }}
     >
-      <div className="flex items-center justify-between mb-3 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <div className="flex items-center justify-between mb-3 ">
         <div
-          className="w-10 h-10 rounded-xl flex items-center justify-center min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
+          className="w-10 h-10 rounded-xl flex items-center justify-center "
           style={{ background: bgMap[accent], color: "var(--text-primary)" }}
         >
           {icon}
         </div>
       </div>
       <div>
-        <p className="text-2xl font-bold min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto" style={{ color: "var(--text-primary)" }}>
+        <p className="text-2xl font-bold " style={{ color: "var(--text-primary)" }}>
           {value}
         </p>
-        <p className="text-sm min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto" style={{ color: "var(--text-secondary)" }}>
+        <p className="text-sm " style={{ color: "var(--text-secondary)" }}>
           {label}
         </p>
       </div>

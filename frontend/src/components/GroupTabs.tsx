@@ -25,24 +25,24 @@ export default function GroupTabs({ groupId, groupName, subject }: Props) {
   };
 
   return (
-    <div className="mb-8 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      <div className="flex items-center justify-between mb-6 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <h1 className="text-2xl font-bold min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <div className="mb-8 ">
+      <div className="flex items-center justify-between mb-6 ">
+        <h1 className="text-2xl font-bold ">
           Study<span style={{ color: 'var(--accent-yellow)' }}>Stack</span>
         </h1>
-        <div className="flex items-center gap-4 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="flex items-center gap-4 ">
           <ThemeSwitcher />
           <NotificationBell />
           <button
             onClick={() => navigate('/')}
-            className="px-3 py-1.5 text-sm rounded-lg border min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
+            className="px-3 py-1.5 text-sm rounded-lg border "
             style={{ borderColor: 'var(--border-subtle)', color: 'var(--text-primary)', background: 'transparent' }}
           >
             Dashboard
           </button>
           <button
             onClick={handleLogout}
-            className="px-3 py-1.5 text-sm rounded-lg border min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
+            className="px-3 py-1.5 text-sm rounded-lg border "
             style={{ borderColor: 'var(--border-subtle)', color: 'var(--text-primary)', background: 'transparent' }}
           >
             Log Out
@@ -50,13 +50,13 @@ export default function GroupTabs({ groupId, groupName, subject }: Props) {
         </div>
       </div>
 
-      <div className="flex items-center gap-3 mb-4 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <span className="bg-yellow-400 text-slate-900 text-xs font-semibold w-fit px-3 py-1 rounded-full min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <div className="flex items-center gap-3 mb-4 ">
+        <span className="bg-yellow-400 text-slate-900 text-xs font-semibold w-fit px-3 py-1 rounded-full ">
           {subject}
         </span>
-        <h2 className="text-2xl font-bold min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">{groupName}</h2>
+        <h2 className="text-2xl font-bold ">{groupName}</h2>
       </div>
-      <div className="flex gap-2 border-b border-white/10 pb-0 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <div className="flex gap-2 border-b border-white/10 pb-0 ">
         {tabs.map((tab) => {
           const active = location.pathname === tab.path;
           return (

@@ -1,4 +1,4 @@
-import StatCard from "./StatCard";
+﻿import StatCard from "./StatCard";
 import { useEffect, useState, useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 import { Flame, Trophy, Clock, HelpCircle, Zap, CheckCircle, MessageSquarePlus } from 'lucide-react';
@@ -135,7 +135,7 @@ export const StudyDashboard: React.FC<Props> = ({ groupId }) => {
   });
 
   return (
-    <div className='min-h-screen p-6 transition-colors duration-300' style={{ background: 'var(--bg-app)', color: 'var(--text-primary)' }}>
+    <div className='transition-colors duration-300' style={{ background: 'var(--bg-app)', color: 'var(--text-primary)' }}>
       <div className='max-w-7xl mx-auto'>
         {groupInfo && (
           <GroupTabs groupId={groupId} groupName={groupInfo.name} subject={groupInfo.subject} />
@@ -335,5 +335,6 @@ export const StudyDashboard: React.FC<Props> = ({ groupId }) => {
     </div>
   );
 };
+
 
 
