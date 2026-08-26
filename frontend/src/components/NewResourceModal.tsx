@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { createResource, uploadFileResource } from "../api/resources";
 
 interface Props {
@@ -47,14 +47,14 @@ export default function NewResourceModal({ groupId, createdById, onClose, onCrea
   };
 
   return (
-    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       <form
         onSubmit={handleSubmit}
-        className="bg-[color:var(--bg-card)] backdrop-blur-lg border border-[color:var(--border-subtle)] text-[color:var(--text-primary)] rounded-xl p-6 w-full max-w-md flex flex-col gap-4"
+        className="bg-[color:var(--bg-card)] backdrop-blur-lg border border-[color:var(--border-subtle)] text-[color:var(--text-primary)] rounded-xl p-6 w-full max-w-md flex flex-col gap-4 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
       >
-        <h2 className="text-xl font-bold">New Resource</h2>
+        <h2 className="text-xl font-bold min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">New Resource</h2>
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           {(["note", "link", "file"] as const).map((t) => (
             <button
               type="button"
@@ -74,7 +74,7 @@ export default function NewResourceModal({ groupId, createdById, onClose, onCrea
           placeholder="Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="bg-[color:var(--bg-app)] border border-[color:var(--border-subtle)] rounded-lg px-4 py-3 outline-none focus:border-yellow-400/50 text-[color:var(--text-primary)] placeholder:text-[color:var(--text-muted)]"
+          className="bg-[color:var(--bg-app)] border border-[color:var(--border-subtle)] rounded-lg px-4 py-3 outline-none focus:border-yellow-400/50 text-[color:var(--text-primary)] placeholder:text-[color:var(--text-muted)] min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
         />
 
         {type === "note" && (
@@ -83,7 +83,7 @@ export default function NewResourceModal({ groupId, createdById, onClose, onCrea
             value={content}
             onChange={(e) => setContent(e.target.value)}
             rows={5}
-            className="bg-[color:var(--bg-app)] border border-[color:var(--border-subtle)] rounded-lg px-4 py-3 outline-none focus:border-yellow-400/50 text-[color:var(--text-primary)] placeholder:text-[color:var(--text-muted)] resize-none"
+            className="bg-[color:var(--bg-app)] border border-[color:var(--border-subtle)] rounded-lg px-4 py-3 outline-none focus:border-yellow-400/50 text-[color:var(--text-primary)] placeholder:text-[color:var(--text-muted)] resize-none min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
           />
         )}
 
@@ -93,7 +93,7 @@ export default function NewResourceModal({ groupId, createdById, onClose, onCrea
             placeholder="https://..."
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="bg-[color:var(--bg-app)] border border-[color:var(--border-subtle)] rounded-lg px-4 py-3 outline-none focus:border-yellow-400/50 text-[color:var(--text-primary)] placeholder:text-[color:var(--text-muted)]"
+            className="bg-[color:var(--bg-app)] border border-[color:var(--border-subtle)] rounded-lg px-4 py-3 outline-none focus:border-yellow-400/50 text-[color:var(--text-primary)] placeholder:text-[color:var(--text-muted)] min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
           />
         )}
 
@@ -101,24 +101,24 @@ export default function NewResourceModal({ groupId, createdById, onClose, onCrea
           <input
             type="file"
             onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-            className="text-sm text-[color:var(--text-secondary)] file:mr-4 file:rounded-lg file:border-0 file:bg-yellow-400 file:text-slate-900 file:px-4 file:py-2 file:font-semibold"
+            className="text-sm text-[color:var(--text-secondary)] file:mr-4 file:rounded-lg file:border-0 file:bg-yellow-400 file:text-slate-900 file:px-4 file:py-2 file:font-semibold min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
           />
         )}
 
-        {error && <p className="text-red-400 text-sm">{error}</p>}
+        {error && <p className="text-red-400 text-sm min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">{error}</p>}
 
-        <div className="flex gap-3 mt-2">
+        <div className="flex gap-3 mt-2 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 border border-[color:var(--border-subtle)] rounded-lg py-3 text-sm text-[color:var(--text-primary)] hover:bg-black/5 transition"
+            className="flex-1 border border-[color:var(--border-subtle)] rounded-lg py-3 text-sm text-[color:var(--text-primary)] hover:bg-black/5 transition min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={submitting}
-            className="flex-1 bg-yellow-400 text-slate-900 font-semibold rounded-lg py-3 text-sm hover:bg-yellow-300 transition disabled:opacity-50"
+            className="flex-1 bg-yellow-400 text-slate-900 font-semibold rounded-lg py-3 text-sm hover:bg-yellow-300 transition disabled:opacity-50 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
           >
             {submitting ? "Creating..." : "Create"}
           </button>

@@ -1,4 +1,4 @@
-﻿import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { StudyDashboard } from "../components/dashboard/StudyDashboard";
 
 export default function GroupDashboardPage() {

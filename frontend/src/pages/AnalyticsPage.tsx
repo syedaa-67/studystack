@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { fetchAnalytics } from "../api/analytics";
 import api from "../api/client";
@@ -39,17 +39,17 @@ export default function AnalyticsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen p-8 transition-colors duration-300" style={{ background: "var(--bg-app)", color: "var(--text-primary)" }}>
-        <p className="text-slate-400">Loading analytics...</p>
+      <div className="min-h-screen p-8 transition-colors duration-300 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto" style={{ background: "var(--bg-app)", color: "var(--text-primary)" }}>
+        <p className="text-slate-400 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">Loading analytics...</p>
       </div>
     );
   }
 
   if (error || !data) {
     return (
-      <div className="min-h-screen p-8 transition-colors duration-300" style={{ background: "var(--bg-app)", color: "var(--text-primary)" }}>
-        <p className="text-slate-400">Couldn't load analytics.</p>
-        <Link to={`/groups/${id}`} className="text-yellow-400 text-sm mt-4 inline-block">
+      <div className="min-h-screen p-8 transition-colors duration-300 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto" style={{ background: "var(--bg-app)", color: "var(--text-primary)" }}>
+        <p className="text-slate-400 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">Couldn't load analytics.</p>
+        <Link to={`/groups/${id}`} className="text-yellow-400 text-sm mt-4 inline-block min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           &larr; Back to group
         </Link>
       </div>
@@ -65,43 +65,43 @@ export default function AnalyticsPage() {
   const hasContributions = data.member_contributions.some((m) => m.completed_count > 0);
 
   return (
-    <div className="min-h-screen p-8 transition-colors duration-300" style={{ background: "var(--bg-app)", color: "var(--text-primary)" }}>
+    <div className="min-h-screen p-8 transition-colors duration-300 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto" style={{ background: "var(--bg-app)", color: "var(--text-primary)" }}>
       <Link
         to={`/groups/${id}`}
-        className="text-slate-400 hover:text-yellow-400 text-sm inline-flex items-center gap-1 mb-6 transition"
+        className="text-slate-400 hover:text-yellow-400 text-sm inline-flex items-center gap-1 mb-6 transition min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
       >
         &larr; Back to group
       </Link>
 
       {groupInfo && <GroupTabs groupId={id!} groupName={groupInfo.name} subject={groupInfo.subject} />}
-      <p className="text-slate-400 text-sm mb-10">
+      <p className="text-slate-400 text-sm mb-10 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {data.completed_deadlines} of {data.total_deadlines} deadlines completed
       </p>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
-        <div style={{ background: "var(--bg-card-yellow)", border: "1px solid var(--border-subtle)" }} className="rounded-xl p-5">
-          <p className="text-3xl font-bold text-[color:var(--text-primary)]">{data.completion_rate}%</p>
-          <p className="text-[color:var(--text-primary)] text-sm mt-1 opacity-70">Completion rate</p>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div style={{ background: "var(--bg-card-yellow)", border: "1px solid var(--border-subtle)" }} className="rounded-xl p-5 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          <p className="text-3xl font-bold text-[color:var(--text-primary)] min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">{data.completion_rate}%</p>
+          <p className="text-[color:var(--text-primary)] text-sm mt-1 opacity-70 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">Completion rate</p>
         </div>
-        <div style={{ background: "var(--bg-card-pink)", border: "1px solid var(--border-subtle)" }} className="rounded-xl p-5">
-          <p className="text-3xl font-bold text-[color:var(--text-primary)]">{data.current_streak}</p>
-          <p className="text-[color:var(--text-primary)] text-sm mt-1 opacity-70">Current streak (days)</p>
+        <div style={{ background: "var(--bg-card-pink)", border: "1px solid var(--border-subtle)" }} className="rounded-xl p-5 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          <p className="text-3xl font-bold text-[color:var(--text-primary)] min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">{data.current_streak}</p>
+          <p className="text-[color:var(--text-primary)] text-sm mt-1 opacity-70 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">Current streak (days)</p>
         </div>
-        <div style={{ background: "var(--bg-card-sage)", border: "1px solid var(--border-subtle)" }} className="rounded-xl p-5">
-          <p className="text-3xl font-bold text-[color:var(--text-primary)]">{data.longest_streak}</p>
-          <p className="text-[color:var(--text-primary)] text-sm mt-1 opacity-70">Longest streak (days)</p>
+        <div style={{ background: "var(--bg-card-sage)", border: "1px solid var(--border-subtle)" }} className="rounded-xl p-5 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          <p className="text-3xl font-bold text-[color:var(--text-primary)] min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">{data.longest_streak}</p>
+          <p className="text-[color:var(--text-primary)] text-sm mt-1 opacity-70 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">Longest streak (days)</p>
         </div>
-        <div style={{ background: "var(--bg-card-blue)", border: "1px solid var(--border-subtle)" }} className="rounded-xl p-5">
-          <p className="text-3xl font-bold text-[color:var(--text-primary)]">{data.total_deadlines}</p>
-          <p className="text-[color:var(--text-primary)] text-sm mt-1 opacity-70">Total deadlines</p>
+        <div style={{ background: "var(--bg-card-blue)", border: "1px solid var(--border-subtle)" }} className="rounded-xl p-5 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          <p className="text-3xl font-bold text-[color:var(--text-primary)] min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">{data.total_deadlines}</p>
+          <p className="text-[color:var(--text-primary)] text-sm mt-1 opacity-70 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">Total deadlines</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-        <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-subtle)" }} className="rounded-xl p-6">
-          <h2 className="text-lg font-semibold mb-4">Completion breakdown</h2>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-subtle)" }} className="rounded-xl p-6 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          <h2 className="text-lg font-semibold mb-4 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">Completion breakdown</h2>
           {data.total_deadlines === 0 ? (
-            <p className="text-slate-400 text-sm">No deadlines yet.</p>
+            <p className="text-slate-400 text-sm min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">No deadlines yet.</p>
           ) : (
             <ResponsiveContainer width="100%" height={260}>
               <PieChart>
@@ -124,10 +124,10 @@ export default function AnalyticsPage() {
           )}
         </div>
 
-        <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-subtle)" }} className="rounded-xl p-6">
-          <h2 className="text-lg font-semibold mb-4">Weekly completion trend</h2>
+        <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-subtle)" }} className="rounded-xl p-6 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          <h2 className="text-lg font-semibold mb-4 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">Weekly completion trend</h2>
           {!hasTrendData ? (
-            <p className="text-slate-400 text-sm">No completions recorded yet.</p>
+            <p className="text-slate-400 text-sm min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">No completions recorded yet.</p>
           ) : (
             <ResponsiveContainer width="100%" height={260}>
               <BarChart data={data.weekly_trend}>
@@ -152,10 +152,10 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
-      <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-subtle)" }} className="rounded-xl p-6">
-        <h2 className="text-lg font-semibold mb-4">Member contribution</h2>
+      <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-subtle)" }} className="rounded-xl p-6 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <h2 className="text-lg font-semibold mb-4 min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">Member contribution</h2>
         {!hasContributions ? (
-          <p className="text-slate-400 text-sm">No completed deadlines assigned to members yet.</p>
+          <p className="text-slate-400 text-sm min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">No completed deadlines assigned to members yet.</p>
         ) : (
           <ResponsiveContainer width="100%" height={260}>
             <BarChart data={data.member_contributions}>

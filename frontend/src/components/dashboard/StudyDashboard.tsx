@@ -1,4 +1,4 @@
-﻿import StatCard from "./StatCard";
+import StatCard from "./StatCard";
 import { useEffect, useState, useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 import { Flame, Trophy, Clock, HelpCircle, Zap, CheckCircle, MessageSquarePlus } from 'lucide-react';
