@@ -15,10 +15,8 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install backend dependencies
-        working-directory: backend
         run: pip install -r requirements.txt
       - name: Run pytest
-        working-directory: backend
         run: pytest
       - name: Set up Node
         uses: actions/setup-node@v4
