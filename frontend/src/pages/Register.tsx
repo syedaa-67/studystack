@@ -80,7 +80,7 @@ const Register = () => {
               value={formData.password}
               onChange={handleChange}
               className="w-full px-4 py-2 rounded-lg bg-card-hover border border-border-subtle text-primary focus:border-accent-yellow focus:outline-none transition-colors min-h-screen w-full overflow-x-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
-              placeholder="••••••••"
+              placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
               required
               minLength={6}
             />
