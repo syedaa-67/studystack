@@ -1,8 +1,10 @@
+import os
 from sqlmodel import SQLModel, create_engine, Session
 
-DATABASE_URL = "sqlite:///./studystack.db"
+DATABASE_URL = os.environ.get("DATABASE_URL", "sqlite:///./studystack.db")
 
-engine = create_engine(DATABASE_URL, echo=True)
+connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
+engine = create_engine(DATABASE_URL, echo=True, connect_args=connect_args)
 
 def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
