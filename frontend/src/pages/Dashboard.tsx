@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ThemeSwitcher } from "../components/ThemeSwitcher";
@@ -78,7 +78,7 @@ export default function Dashboard() {
   return (
     <div style={{ background: "var(--bg-app)", color: "var(--text-primary)", minHeight: "100vh", padding: "2rem" }}>
       {/* Header */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem", gap: "1rem" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem", gap: "1rem" }}>
         <h1 style={{ fontSize: "1.875rem", fontWeight: "bold" }}>
           Study<span style={{ color: "var(--accent-yellow)" }}>Stack</span>
         </h1>
@@ -199,3 +199,4 @@ export default function Dashboard() {
     </div>
   );
 }
+

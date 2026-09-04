@@ -24,7 +24,7 @@ function MainLayout() {
 
 function App() {
   return (
-    <div className="min-h-screen w-full overflow-x-hidden bg-background">
+    <div className="min-h-screen w-full overflow-x-clip bg-background">
       <Routes>
         {/* Full-width Auth Pages (No container constraint) */}
         <Route path="/login" element={<Login />} />

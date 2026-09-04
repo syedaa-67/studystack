@@ -1,14 +1,17 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+﻿import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ThemeSwitcher } from './ThemeSwitcher';
 import NotificationBell from './NotificationBell';
+import GroupMiniHeader from './GroupMiniHeader';
 
 interface Props {
   groupId: number | string;
   groupName: string;
   subject: string;
+  memberCount?: number;
+  completionRate?: number;
 }
 
-export default function GroupTabs({ groupId, groupName, subject }: Props) {
+export default function GroupTabs({ groupId, groupName, subject, memberCount, completionRate }: Props) {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -26,7 +29,14 @@ export default function GroupTabs({ groupId, groupName, subject }: Props) {
 
   return (
     <div className="mb-8 ">
-      <div className="flex items-center justify-between mb-6 ">
+      {memberCount !== undefined && completionRate !== undefined && (
+        <GroupMiniHeader
+          groupName={groupName}
+          memberCount={memberCount}
+          completionRate={completionRate}
+        />
+      )}
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6 ">
         <h1 className="text-2xl font-bold ">
           Study<span style={{ color: 'var(--accent-yellow)' }}>Stack</span>
         </h1>
@@ -56,7 +66,7 @@ export default function GroupTabs({ groupId, groupName, subject }: Props) {
         </span>
         <h2 className="text-2xl font-bold ">{groupName}</h2>
       </div>
-      <div className="flex gap-2 border-b border-white/10 pb-0 ">
+      <div className="flex flex-wrap gap-2 border-b border-white/10 pb-0 ">
         {tabs.map((tab) => {
           const active = location.pathname === tab.path;
           return (
@@ -77,3 +87,4 @@ export default function GroupTabs({ groupId, groupName, subject }: Props) {
     </div>
   );
 }
+

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { listResources } from "../api/resources";
 import type { ResourceRead } from "../api/resources";
 import NewResourceModal from "./NewResourceModal";
@@ -30,7 +30,7 @@ export default function ResourcesSection({ groupId, currentMemberId }: Props) {
   return (
     <div className="mt-10 ">
       <div className="flex justify-between items-center mb-6 ">
-        <h2 className="text-xl font-semibold ">Resources</h2>
+        <div className="flex items-center gap-2"><h2 className="text-xl font-semibold ">Resources</h2><span className="bg-yellow-400 text-slate-900 text-xs font-bold px-2 py-0.5 rounded-full">{resources.length}</span></div>
         <button
           onClick={() => setShowNew(true)}
           className="bg-yellow-400 text-slate-900 font-semibold rounded-lg px-6 py-3 hover:bg-yellow-300 transition "

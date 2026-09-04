@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+﻿import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api/client';
 import GroupTabs from '../components/GroupTabs';
@@ -6,6 +6,7 @@ import NewDeadlineModal from '../components/NewDeadlineModal';
 import NewMemberModal from '../components/NewMemberModal';
 import ResourcesSection from '../components/ResourcesSection';
 import MonthlyContributions from '../components/MonthlyContributions';
+import TaskContributions from '../components/TaskContributions';
 import { fetchAnalytics } from '../api/analytics';
 import type { AnalyticsResponse } from '../api/analytics';
 import { useGroupSocket } from '../hooks/useGroupSocket';
@@ -137,7 +138,14 @@ const GroupDetail = () => {
   return (
     <div style={{ background: 'var(--bg-app)', color: 'var(--text-primary)', minHeight: '100vh', padding: '2rem' }}>
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-        <GroupTabs groupId={group.id} groupName={group.name} subject={group.subject} />
+        <GroupTabs
+          groupId={group.id}
+          groupName={group.name}
+          subject={group.subject}
+          memberCount={totalMembers}
+          completionRate={analytics ? analytics.completion_rate : 0}
+        />
+
 
         <div style={{ ...cardStyle, padding: '1.25rem 1.5rem', marginBottom: '1.5rem' }}>
           <p style={{ color: 'var(--text-secondary)' }}>{group.description || 'No description'}</p>
@@ -232,7 +240,10 @@ const GroupDetail = () => {
 
           <div style={{ ...cardStyle, padding: '1.5rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <h3 style={{ fontSize: '1.15rem', fontWeight: '600' }}>Members</h3>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <h3 style={{ fontSize: '1.15rem', fontWeight: '600' }}>Members</h3>
+                <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '0.1rem 0.5rem', borderRadius: '9999px', background: 'var(--accent-yellow)', color: '#000' }}>{totalMembers}</span>
+              </div>
               <button onClick={() => setShowMemberModal(true)} style={{ background: 'transparent', color: 'var(--text-primary)', border: '1px solid var(--border-subtle)', borderRadius: '0.5rem', padding: '0.4rem 0.8rem', fontSize: '0.8rem', cursor: 'pointer' }}>
                 + Add
               </button>
@@ -240,7 +251,12 @@ const GroupDetail = () => {
             {group.members && group.members.length > 0 ? (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
                 {group.members.map((member) => (
-                  <div key={member.id} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.6rem 0.75rem', background: 'var(--bg-app)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' }}>
+                  <div
+                    key={member.id}
+                    style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.6rem 0.75rem', background: 'var(--bg-app)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', transition: 'border-color 0.15s ease' }}
+                    onMouseOver={(e) => { e.currentTarget.style.borderColor = 'var(--accent-yellow)'; }}
+                    onMouseOut={(e) => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; }}
+                  >
                     <div style={{ width: '32px', height: '32px', borderRadius: '9999px', background: 'var(--accent-yellow)', color: '#000', fontWeight: 700, fontSize: '0.8rem', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                       {member.name.charAt(0).toUpperCase()}
                     </div>
@@ -262,6 +278,7 @@ const GroupDetail = () => {
 
         <div style={{ marginBottom: '1.5rem' }}>
           <MonthlyContributions members={group.members} deadlines={group.deadlines} />
+          <TaskContributions groupId={group.id} members={group.members} currentMemberId={myMemberId} />
         </div>
 
         <ResourcesSection groupId={group.id} currentMemberId={myMemberId} />
@@ -274,6 +291,8 @@ const GroupDetail = () => {
 };
 
 export default GroupDetail;
+
+
 
 
 

@@ -26,11 +26,11 @@ export default function AnalyticsPage() {
   const [data, setData] = useState<AnalyticsResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [groupInfo, setGroupInfo] = useState<{ name: string; subject: string } | null>(null);
+  const [groupInfo, setGroupInfo] = useState<{ name: string; subject: string; memberCount: number } | null>(null);
 
   useEffect(() => {
     if (!id) return;
-    api.get(`/study-groups/${id}`).then((res) => setGroupInfo({ name: res.data.name, subject: res.data.subject }));
+    api.get(`/study-groups/${id}`).then((res) => setGroupInfo({ name: res.data.name, subject: res.data.subject, memberCount: res.data.members?.length || 0 }));
     fetchAnalytics(id)
       .then(setData)
       .catch(() => setError(true))
@@ -73,7 +73,7 @@ export default function AnalyticsPage() {
         &larr; Back to group
       </Link>
 
-      {groupInfo && <GroupTabs groupId={id!} groupName={groupInfo.name} subject={groupInfo.subject} />}
+      {groupInfo && <GroupTabs groupId={id!} groupName={groupInfo.name} subject={groupInfo.subject} memberCount={groupInfo.memberCount} completionRate={data ? Math.round((data.completed_deadlines / (data.total_deadlines || 1)) * 100) : 0} />}
       <p className="text-slate-400 text-sm mb-10 ">
         {data.completed_deadlines} of {data.total_deadlines} deadlines completed
       </p>

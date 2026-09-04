@@ -16,13 +16,13 @@ const COLORS = ["var(--bg-card-yellow)", "var(--bg-card-pink)", "var(--bg-card-s
 export default function CalendarPage() {
   const { id } = useParams();
   const [deadlines, setDeadlines] = useState<Deadline[]>([]);
-  const [groupInfo, setGroupInfo] = useState<{ name: string; subject: string } | null>(null);
+  const [groupInfo, setGroupInfo] = useState<{ name: string; subject: string; memberCount: number } | null>(null);
   const [monthIndex, setMonthIndex] = useState(new Date().getMonth());
 
   useEffect(() => {
     if (!id) return;
     api.get(`/study-groups/${id}`).then((res) => {
-      setGroupInfo({ name: res.data.name, subject: res.data.subject });
+      setGroupInfo({ name: res.data.name, subject: res.data.subject, memberCount: res.data.members?.length || 0 });
       setDeadlines(res.data.deadlines || []);
     });
   }, [id]);
@@ -45,7 +45,7 @@ export default function CalendarPage() {
   return (
     <div style={{ background: "var(--bg-app)", color: "var(--text-primary)", minHeight: "100vh", padding: "2rem" }}>
       <div style={{ maxWidth: "1280px", margin: "0 auto" }}>
-        {groupInfo && <GroupTabs groupId={id!} groupName={groupInfo.name} subject={groupInfo.subject} />}
+        {groupInfo && <GroupTabs groupId={id!} groupName={groupInfo.name} subject={groupInfo.subject} memberCount={groupInfo.memberCount} completionRate={deadlines.length ? Math.round((deadlines.filter((d) => d.completed).length / deadlines.length) * 100) : 0} />}
 
         <div style={{ ...cardStyle, padding: "1rem 1.25rem", marginBottom: "1.5rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <h2 style={{ fontSize: "1.25rem", fontWeight: 700 }}>Deadline Calendar</h2>

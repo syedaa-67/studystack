@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api/client';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ const Login = () => {
       formData.append('username', email);
       formData.append('password', password);
 
-      const response = await axios.post('https://studystack-z2b3.onrender.com/auth/login', formData, {
+      const response = await api.post('/auth/login', formData, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
@@ -65,7 +65,7 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-2.5 rounded-lg bg-zinc-800/80 border border-zinc-700 text-white placeholder-zinc-500 focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 focus:outline-none transition-all"
-              placeholder="••••••••"
+              placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
               required
             />
           </div>

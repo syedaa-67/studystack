@@ -1,6 +1,7 @@
-from sqlmodel import SQLModel, Field, Relationship
+﻿from sqlmodel import SQLModel, Field, Relationship
 from typing import Optional, List
 from datetime import datetime
+from enum import Enum
 
 class StudyGroup(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -99,3 +100,20 @@ class User(SQLModel, table=True):
 
 
 
+
+class TaskStatus(str, Enum):
+    TODO = "todo"
+    IN_PROGRESS = "in_progress"
+    DONE = "done"
+
+
+class Task(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    group_id: int = Field(foreign_key="studygroup.id")
+    title: str
+    description: Optional[str] = None
+    assigned_to: Optional[int] = Field(default=None, foreign_key="member.id")
+    status: TaskStatus = Field(default=TaskStatus.TODO)
+    due_date: Optional[datetime] = None
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)

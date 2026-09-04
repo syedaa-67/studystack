@@ -1,6 +1,7 @@
 ﻿from pydantic import BaseModel
 from typing import Optional, List
 from datetime import datetime
+from app.models import TaskStatus
 
 class StudyGroupCreate(BaseModel):
     name: str
@@ -180,3 +181,39 @@ class LeaderboardEntry(BaseModel):
 
 class LeaderboardResponse(BaseModel):
     entries: List[LeaderboardEntry]
+
+class TaskCreate(BaseModel):
+    title: str
+    description: Optional[str] = None
+    assigned_to: Optional[int] = None
+    due_date: Optional[datetime] = None
+
+
+class TaskUpdateStatus(BaseModel):
+    status: TaskStatus
+
+
+class TaskResponse(BaseModel):
+    id: int
+    group_id: int
+    title: str
+    description: Optional[str] = None
+    assigned_to: Optional[int] = None
+    assigned_to_name: Optional[str] = None
+    status: TaskStatus
+    due_date: Optional[datetime] = None
+    created_at: datetime
+    updated_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class MemberContributionSummary(BaseModel):
+    member_id: int
+    member_name: str
+    total_tasks: int
+    done: int
+    in_progress: int
+    todo: int
+    percent_complete: float
