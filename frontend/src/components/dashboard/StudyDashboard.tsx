@@ -194,6 +194,7 @@ export const StudyDashboard: React.FC<Props> = ({ groupId }) => {
                   <Cell fill='#60a5fa' />
                   <Cell fill='#f472b6' />
                 </Pie>
+                <Tooltip contentStyle={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-subtle)', borderRadius: 8, color: 'var(--text-primary)', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }} formatter={(value, name) => [`${value}%`, name] as [string, string]} />
                 <Legend formatter={() => 'percentage'} iconSize={8} wrapperStyle={{ fontSize: '11px' }} />
               </PieChart>
             </ResponsiveContainer>
@@ -205,7 +206,7 @@ export const StudyDashboard: React.FC<Props> = ({ groupId }) => {
               <LineChart data={focusTrend}>
                 <XAxis dataKey='day' stroke='#64748b' fontSize={11} />
                 <YAxis stroke='#64748b' fontSize={11} allowDecimals={false} />
-                <Tooltip contentStyle={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-subtle)', borderRadius: 8, color: 'var(--text-primary)', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }} formatter={(_value, name) => [`%`, name] as [string, string]} />
+                <Tooltip contentStyle={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-subtle)', borderRadius: 8, color: 'var(--text-primary)', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }} formatter={(value) => [`${value} min`, 'Focus time']} />
                 <Line type='monotone' dataKey='minutes' stroke='#fbbf24' strokeWidth={2} dot={{ fill: '#fbbf24', r: 3 }} />
               </LineChart>
             </ResponsiveContainer>

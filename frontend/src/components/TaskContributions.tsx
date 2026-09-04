@@ -99,12 +99,12 @@ export default function TaskContributions({ groupId, members }: Props) {
         ))}
       </div>
 
-      <div style={{ display: "flex", gap: "0.5rem", borderTop: "1px solid var(--border-subtle)", paddingTop: "0.75rem" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", borderTop: "1px solid var(--border-subtle)", paddingTop: "0.75rem" }}>
         <input
           value={newTitle}
           onChange={(e) => setNewTitle(e.target.value)}
           placeholder="New task title"
-          style={{ flex: 1, background: "var(--bg-app)", border: "1px solid var(--border-subtle)", borderRadius: "0.4rem", padding: "0.4rem 0.6rem", fontSize: "0.8rem", color: "var(--text-primary)" }}
+          style={{ flex: "1 1 140px", minWidth: 0, background: "var(--bg-app)", border: "1px solid var(--border-subtle)", borderRadius: "0.4rem", padding: "0.4rem 0.6rem", fontSize: "0.8rem", color: "var(--text-primary)" }}
         />
         <select
           value={newAssignee}

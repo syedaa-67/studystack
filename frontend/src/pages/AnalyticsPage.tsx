@@ -138,6 +138,7 @@ export default function AnalyticsPage() {
                   cursor={{ fill: "var(--border-subtle)" }}
                   contentStyle={{ backgroundColor: "var(--bg-card)", border: "1px solid var(--border-subtle)", borderRadius: 10, color: "var(--text-primary)", boxShadow: "0 4px 16px rgba(0,0,0,0.15)" }}
                   labelStyle={{ color: "var(--text-secondary)", fontSize: 11 }}
+                  formatter={(value) => [value, "Completed"]}
                 />
                 <Bar dataKey="completed_count" radius={[6, 6, 0, 0]}>
                   {data.weekly_trend.map((entry, index) => {
@@ -164,6 +165,7 @@ export default function AnalyticsPage() {
               <YAxis stroke="#64748b" fontSize={11} allowDecimals={false} />
               <Tooltip
                 contentStyle={{ backgroundColor: "var(--bg-card)", border: "1px solid var(--border-subtle)", borderRadius: 8, color: "var(--text-primary)" }}
+                formatter={(value) => [value, "Completed"]}
               />
               <Bar dataKey="completed_count" fill={TEAL} radius={[6, 6, 0, 0]} />
             </BarChart>
