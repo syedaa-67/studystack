@@ -12,7 +12,7 @@ export default function GroupMiniHeader({
 }: GroupMiniHeaderProps) {
   return (
     <div
-      className="sticky z-30 flex items-center justify-between px-4 py-2 mb-4 rounded-xl2 border"
+      className="sticky z-30 flex items-center justify-between gap-2 px-4 py-2 mb-4 rounded-xl2 border flex-wrap"
       style={{
         top: "0px",
         background: "var(--bg-panel)",
@@ -21,13 +21,13 @@ export default function GroupMiniHeader({
       }}
     >
       <span
-        className="font-semibold truncate"
-        style={{ color: "var(--text-primary)" }}
+        className="font-semibold"
+        style={{ color: "var(--text-primary)", minWidth: 0 }}
       >
         {groupName}
       </span>
 
-      <div className="flex items-center gap-4 text-sm" style={{ color: "var(--text-muted)" }}>
+      <div className="flex items-center gap-4 text-sm shrink-0" style={{ color: "var(--text-muted)" }}>
         <span>{memberCount} member{memberCount === 1 ? "" : "s"}</span>
         <span>{completionRate}% complete</span>
       </div>

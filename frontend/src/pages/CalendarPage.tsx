@@ -47,7 +47,7 @@ export default function CalendarPage() {
       <div style={{ maxWidth: "1280px", margin: "0 auto" }}>
         {groupInfo && <GroupTabs groupId={id!} groupName={groupInfo.name} subject={groupInfo.subject} memberCount={groupInfo.memberCount} completionRate={deadlines.length ? Math.round((deadlines.filter((d) => d.completed).length / deadlines.length) * 100) : 0} />}
 
-        <div style={{ ...cardStyle, padding: "1rem 1.25rem", marginBottom: "1.5rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ ...cardStyle, padding: "1rem 1.25rem", marginBottom: "1.5rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
           <h2 style={{ fontSize: "1.25rem", fontWeight: 700 }}>Deadline Calendar</h2>
           <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
             {MONTHS.map((m, i) => (

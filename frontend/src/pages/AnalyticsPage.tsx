@@ -117,7 +117,8 @@ export default function AnalyticsPage() {
                   <Cell fill={MUTED} />
                 </Pie>
                 <Tooltip
-                  contentStyle={{ backgroundColor: "var(--bg-card)", border: "1px solid var(--border-subtle)", borderRadius: 8, color: "var(--text-primary)" }}
+                  contentStyle={{ backgroundColor: "var(--bg-card)", border: "1px solid var(--border-subtle)", borderRadius: 8, color: "var(--text-primary)", padding: "4px 8px", fontSize: 11 }}
+                  itemStyle={{ fontSize: 11, padding: 0 }}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -136,8 +137,9 @@ export default function AnalyticsPage() {
                 <YAxis stroke="#64748b" fontSize={11} allowDecimals={false} />
                 <Tooltip
                   cursor={{ fill: "var(--border-subtle)" }}
-                  contentStyle={{ backgroundColor: "var(--bg-card)", border: "1px solid var(--border-subtle)", borderRadius: 10, color: "var(--text-primary)", boxShadow: "0 4px 16px rgba(0,0,0,0.15)" }}
-                  labelStyle={{ color: "var(--text-secondary)", fontSize: 11 }}
+                  contentStyle={{ backgroundColor: "var(--bg-card)", border: "1px solid var(--border-subtle)", borderRadius: 8, color: "var(--text-primary)", boxShadow: "0 4px 16px rgba(0,0,0,0.15)", padding: "4px 8px", fontSize: 11 }}
+                  labelStyle={{ color: "var(--text-secondary)", fontSize: 10, marginBottom: 2 }}
+                  itemStyle={{ fontSize: 11, padding: 0 }}
                   formatter={(value) => [value, "Completed"]}
                 />
                 <Bar dataKey="completed_count" radius={[6, 6, 0, 0]}>
@@ -164,7 +166,9 @@ export default function AnalyticsPage() {
               <XAxis dataKey="member_name" stroke="#64748b" fontSize={12} />
               <YAxis stroke="#64748b" fontSize={11} allowDecimals={false} />
               <Tooltip
-                contentStyle={{ backgroundColor: "var(--bg-card)", border: "1px solid var(--border-subtle)", borderRadius: 8, color: "var(--text-primary)" }}
+                contentStyle={{ backgroundColor: "var(--bg-card)", border: "1px solid var(--border-subtle)", borderRadius: 8, color: "var(--text-primary)", padding: "4px 8px", fontSize: 11 }}
+                labelStyle={{ fontSize: 10, marginBottom: 2 }}
+                itemStyle={{ fontSize: 11, padding: 0 }}
                 formatter={(value) => [value, "Completed"]}
               />
               <Bar dataKey="completed_count" fill={TEAL} radius={[6, 6, 0, 0]} />
