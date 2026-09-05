@@ -151,7 +151,7 @@ const GroupDetail = () => {
           <p style={{ color: 'var(--text-secondary)' }}>{group.description || 'No description'}</p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '1rem', marginBottom: '1.5rem' }}>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5" style={{ gap: '1rem', marginBottom: '1.5rem' }}>
           {[
             { label: 'Members', value: totalMembers, bg: 'var(--bg-card-yellow)' },
             { label: 'Deadlines', value: totalDeadlines, bg: 'var(--bg-card-pink)' },
@@ -187,7 +187,7 @@ const GroupDetail = () => {
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem', marginBottom: '1.5rem' }}>
+        <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr]" style={{ gap: '1.5rem', marginBottom: '1.5rem' }}>
           <div style={{ ...cardStyle, padding: '1.5rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
               <h3 style={{ fontSize: '1.15rem', fontWeight: '600' }}>Deadlines</h3>

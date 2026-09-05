@@ -104,7 +104,7 @@ export default function Dashboard() {
       </div>
 
       {/* Stats */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1rem", marginBottom: "2rem" }}>
+      <div className="grid grid-cols-2 sm:grid-cols-4" style={{ gap: "1rem", marginBottom: "2rem" }}>
         <div style={{ background: "var(--bg-card-yellow)", padding: "1.25rem", borderRadius: "var(--radius-card)" }}>
           <p style={{ fontSize: "1.875rem", fontWeight: "bold" }}>{groups.length}</p>
           <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>Study Groups</p>
@@ -124,7 +124,7 @@ export default function Dashboard() {
       </div>
 
       {/* Groups and Deadlines */}
-      <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "2rem" }}>
+      <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr]" style={{ gap: "2rem" }}>
         <div>
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: "0.75rem", marginBottom: "1.5rem" }}>
             <h2 style={{ fontSize: "1.25rem", fontWeight: "600", minWidth: 0 }}>Your Study Groups</h2>
@@ -149,7 +149,7 @@ export default function Dashboard() {
               <p style={{ color: "var(--text-secondary)" }}>No study groups yet. Create your first one.</p>
             </div>
           ) : (
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem" }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: "1.25rem" }}>
               {groups.map((group) => (
                 <div
                   key={group.id}
