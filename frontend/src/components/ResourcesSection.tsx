@@ -29,7 +29,7 @@ export default function ResourcesSection({ groupId, currentMemberId }: Props) {
 
   return (
     <div className="mt-10 ">
-      <div className="flex justify-between items-center mb-6 ">
+      <div className="flex flex-wrap justify-between items-center gap-3 mb-6 ">
         <div className="flex items-center gap-2"><h2 className="text-xl font-semibold ">Resources</h2><span className="bg-yellow-400 text-slate-900 text-xs font-bold px-2 py-0.5 rounded-full">{resources.length}</span></div>
         <button
           onClick={() => setShowNew(true)}

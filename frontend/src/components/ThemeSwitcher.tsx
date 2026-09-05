@@ -37,7 +37,7 @@ export const ThemeSwitcher = () => {
       {open && (
         <>
           <div className="fixed inset-0 z-40 " onClick={() => setOpen(false)} />
-          <div className="absolute right-0 mt-2 z-50 w-56 p-3 rounded-xl bg-gray-900/95 border border-white/10 shadow-2xl backdrop-blur-sm ">
+          <div className="absolute left-0 mt-2 z-50 w-56 max-w-[calc(100vw-2rem)] p-3 rounded-xl bg-gray-900/95 border border-white/10 shadow-2xl backdrop-blur-sm ">
             <div className="space-y-2 ">
               <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-2 ">Theme</h4>
               <div className="grid grid-cols-4 gap-1 ">

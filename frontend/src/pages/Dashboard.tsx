@@ -125,8 +125,8 @@ export default function Dashboard() {
       {/* Groups and Deadlines */}
       <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "2rem" }}>
         <div>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
-            <h2 style={{ fontSize: "1.25rem", fontWeight: "600" }}>Your Study Groups</h2>
+          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: "0.75rem", marginBottom: "1.5rem" }}>
+            <h2 style={{ fontSize: "1.25rem", fontWeight: "600", minWidth: 0 }}>Your Study Groups</h2>
             <button
               onClick={() => setShowModal(true)}
               style={{
