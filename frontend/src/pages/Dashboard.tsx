@@ -76,7 +76,8 @@ export default function Dashboard() {
   }
 
   return (
-    <div style={{ background: "var(--bg-app)", color: "var(--text-primary)", minHeight: "100vh", padding: "2rem" }}>
+    <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6" style={{ background: "var(--bg-app)", color: "var(--text-primary)", minHeight: "100vh" }}>
+      <div className="max-w-7xl mx-auto">
       {/* Header */}
       <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem", gap: "1rem" }}>
         <h1 style={{ fontSize: "1.875rem", fontWeight: "bold" }}>
@@ -195,6 +196,7 @@ export default function Dashboard() {
         </div>
       </div>
 
+      </div>
       {showModal && <NewGroupModal onClose={() => setShowModal(false)} onCreated={loadData} />}
     </div>
   );
