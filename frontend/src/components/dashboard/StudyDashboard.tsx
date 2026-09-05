@@ -135,7 +135,7 @@ export const StudyDashboard: React.FC<Props> = ({ groupId }) => {
   });
 
   return (
-    <div className='transition-colors duration-300' style={{ background: 'var(--bg-app)', color: 'var(--text-primary)' }}>
+    <div className='transition-colors duration-300 px-4 sm:px-6 lg:px-8 py-4 sm:py-6' style={{ background: 'var(--bg-app)', color: 'var(--text-primary)', minHeight: '100vh' }}>
       <div className='max-w-7xl mx-auto'>
         {groupInfo && (
           <GroupTabs groupId={groupId} groupName={groupInfo.name} subject={groupInfo.subject} memberCount={members.length} completionRate={analytics ? analytics.completion_rate : 0} />
