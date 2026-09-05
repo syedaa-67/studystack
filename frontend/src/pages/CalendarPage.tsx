@@ -49,7 +49,7 @@ export default function CalendarPage() {
 
         <div style={{ ...cardStyle, padding: "1rem 1.25rem", marginBottom: "1.5rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
           <h2 style={{ fontSize: "1.25rem", fontWeight: 700 }}>Deadline Calendar</h2>
-          <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
+          <div className="grid grid-cols-4 sm:grid-cols-6" style={{ gap: "0.4rem" }}>
             {MONTHS.map((m, i) => (
               <button
                 key={m}
@@ -76,9 +76,15 @@ export default function CalendarPage() {
             const dayDeadlines = deadlinesByDay[day] || [];
             const date = new Date(year, monthIndex, day);
             const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+            const today = new Date();
+            const isToday = day === today.getDate() && monthIndex === today.getMonth() && year === today.getFullYear();
+            const weekdayLabel = date.toLocaleDateString(undefined, { weekday: "short" });
             return (
-              <div key={day} style={{ display: "flex", gap: "1rem", alignItems: "flex-start" }}>
-                <div style={{ width: "28px", fontWeight: 700, fontSize: "0.9rem", paddingTop: "0.6rem", flexShrink: 0, textAlign: "center" }}>{day}</div>
+              <div key={day} style={{ display: "flex", gap: "1rem", alignItems: "flex-start", background: isToday ? "var(--bg-card-yellow)" : "transparent", borderRadius: "var(--radius-sm)", padding: isToday ? "0.4rem 0.5rem" : "0" }}>
+                <div style={{ width: "40px", flexShrink: 0, textAlign: "center", paddingTop: "0.6rem" }}>
+                  <div style={{ fontWeight: 700, fontSize: "0.9rem" }}>{day}</div>
+                  <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", textTransform: "uppercase" }}>{weekdayLabel}</div>
+                </div>
                 <div style={{ flex: 1, display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
                   {dayDeadlines.length === 0 ? (
                     <div style={{ ...cardStyle, padding: "0.6rem 1rem", color: "var(--text-muted)", fontSize: "0.85rem", width: "100%" }}>
