@@ -164,7 +164,7 @@ export default function Dashboard() {
                   onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-2px)"}
                   onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"}
                 >
-                  <span style={{ fontSize: "0.75rem", fontWeight: "600", background: "var(--accent-yellow)", color: "#000", padding: "0.25rem 0.75rem", borderRadius: "9999px" }}>
+                  <span style={{ fontSize: "0.75rem", fontWeight: "600", background: "var(--accent-yellow)", color: "#000", padding: "0.25rem 0.75rem", borderRadius: "9999px", whiteSpace: "nowrap", display: "inline-block", width: "fit-content", maxWidth: "100%" }}>
                     {group.subject}
                   </span>
                   <h3 style={{ fontSize: "1.125rem", fontWeight: "bold", marginTop: "0.5rem" }}>{group.name}</h3>
