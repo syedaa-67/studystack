@@ -43,8 +43,8 @@ export default function CalendarPage() {
   const cardStyle: React.CSSProperties = { background: "var(--bg-card)", border: "1px solid var(--border-subtle)", borderRadius: "var(--radius-card)" };
 
   return (
-    <div style={{ background: "var(--bg-app)", color: "var(--text-primary)", minHeight: "100vh", padding: "2rem" }}>
-      <div style={{ maxWidth: "1280px", margin: "0 auto" }}>
+    <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6" style={{ background: "var(--bg-app)", color: "var(--text-primary)", minHeight: "100vh" }}>
+      <div className="max-w-7xl mx-auto">
         {groupInfo && <GroupTabs groupId={id!} groupName={groupInfo.name} subject={groupInfo.subject} memberCount={groupInfo.memberCount} completionRate={deadlines.length ? Math.round((deadlines.filter((d) => d.completed).length / deadlines.length) * 100) : 0} />}
 
         <div style={{ ...cardStyle, padding: "1rem 1.25rem", marginBottom: "1.5rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>

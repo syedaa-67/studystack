@@ -39,19 +39,23 @@ export default function AnalyticsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen p-8 transition-colors duration-300 " style={{ background: "var(--bg-app)", color: "var(--text-primary)" }}>
+      <div className="min-h-screen transition-colors duration-300 " style={{ background: "var(--bg-app)", color: "var(--text-primary)" }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
         <p className="text-slate-400 ">Loading analytics...</p>
+      </div>
       </div>
     );
   }
 
   if (error || !data) {
     return (
-      <div className="min-h-screen p-8 transition-colors duration-300 " style={{ background: "var(--bg-app)", color: "var(--text-primary)" }}>
+      <div className="min-h-screen transition-colors duration-300 " style={{ background: "var(--bg-app)", color: "var(--text-primary)" }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
         <p className="text-slate-400 ">Couldn't load analytics.</p>
         <Link to={`/groups/${id}`} className="text-yellow-400 text-sm mt-4 inline-block ">
           &larr; Back to group
         </Link>
+      </div>
       </div>
     );
   }
@@ -65,7 +69,8 @@ export default function AnalyticsPage() {
   const hasContributions = data.member_contributions.some((m) => m.completed_count > 0);
 
   return (
-    <div className="min-h-screen p-8 transition-colors duration-300 " style={{ background: "var(--bg-app)", color: "var(--text-primary)" }}>
+    <div className="min-h-screen transition-colors duration-300 " style={{ background: "var(--bg-app)", color: "var(--text-primary)" }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
       <Link
         to={`/groups/${id}`}
         className="text-slate-400 hover:text-yellow-400 text-sm inline-flex items-center gap-1 mb-6 transition "
@@ -175,6 +180,7 @@ export default function AnalyticsPage() {
             </BarChart>
           </ResponsiveContainer>
         )}
+      </div>
       </div>
     </div>
   );
