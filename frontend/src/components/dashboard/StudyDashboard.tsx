@@ -1,7 +1,7 @@
 ﻿import StatCard from "./StatCard";
 import { useEffect, useState, useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
-import { Flame, Trophy, Clock, HelpCircle, Zap, CheckCircle, MessageSquarePlus } from 'lucide-react';
+import { Flame, Trophy, Clock, HelpCircle, Zap, CheckCircle } from 'lucide-react';
 import { useGroupSocket } from '../../hooks/useGroupSocket';
 import api from '../../api/client';
 import { fetchAnalytics } from '../../api/analytics';
@@ -9,7 +9,7 @@ import type { AnalyticsResponse } from '../../api/analytics';
 import { fetchLeaderboard } from '../../api/leaderboard';
 import { fetchFocusTrend } from '../../api/focusTrend';
 import type { FocusTrendPoint } from '../../api/focusTrend';
-import { listResources, summarizeResource } from '../../api/resources';
+import { listResources } from '../../api/resources';
 import type { ResourceRead } from '../../api/resources';
 import { BADGE_CATALOG } from './types';
 import type { LeaderboardEntry, DeadlineInGroup, MemberInGroup } from './types';
@@ -33,11 +33,6 @@ export const StudyDashboard: React.FC<Props> = ({ groupId }) => {
   const [resources, setResources] = useState<ResourceRead[]>([]);
   const [focusTrend, setFocusTrend] = useState<FocusTrendPoint[]>([]);
 
-  const [showAIPopover, setShowAIPopover] = useState(false);
-  const [selectedResourceId, setSelectedResourceId] = useState<number | ''>('');
-  const [aiResponse, setAiResponse] = useState('');
-  const [aiLoading, setAiLoading] = useState(false);
-  const [aiError, setAiError] = useState('');
   const [sosSentId, setSosSentId] = useState<number | null>(null);
 
   const loadAll = () => {
@@ -103,23 +98,6 @@ export const StudyDashboard: React.FC<Props> = ({ groupId }) => {
     console.log(`SOS requested for "${title}"`);
   };
 
-  const handleAIAsk = async () => {
-    if (selectedResourceId === '') {
-      setAiError('Pick a resource to summarize.');
-      return;
-    }
-    setAiLoading(true);
-    setAiError('');
-    setAiResponse('');
-    try {
-      const result = await summarizeResource(Number(selectedResourceId));
-      setAiResponse(result);
-    } catch {
-      setAiError("Couldn't generate a summary right now.");
-    } finally {
-      setAiLoading(false);
-    }
-  };
 
   const badgeDisplay = BADGE_CATALOG.map((def) => {
     const earned = myEntry?.badges.includes(def.name) ?? false;
@@ -300,39 +278,6 @@ export const StudyDashboard: React.FC<Props> = ({ groupId }) => {
         </div>
       </div>
 
-      <div className='fixed bottom-6 right-6 z-50'>
-        {!showAIPopover ? (
-          <button onClick={() => setShowAIPopover(true)} className='w-14 h-14 rounded-full bg-yellow-400 text-slate-900 shadow-lg flex items-center justify-center hover:scale-110 transition-transform'>
-            <MessageSquarePlus className='w-6 h-6' />
-          </button>
-        ) : (
-          <div className='w-80 bg-[color:var(--bg-card)] border border-[color:var(--border-subtle)] rounded-xl shadow-2xl p-4'>
-            <div className='flex justify-between items-center mb-3'>
-              <span className='text-sm font-semibold text-yellow-400'>Ask Study AI</span>
-              <button onClick={() => setShowAIPopover(false)} className='text-slate-400 hover:text-white'>{'\u2715'}</button>
-            </div>
-            <select
-              value={selectedResourceId}
-              onChange={(e) => setSelectedResourceId(e.target.value ? Number(e.target.value) : '')}
-              className='w-full bg-[color:var(--bg-app)] border border-[color:var(--border-subtle)] rounded-lg p-2 text-sm text-[color:var(--text-primary)] focus:outline-none focus:border-yellow-400/50 mb-2'
-            >
-              <option value=''>Pick a resource to summarize...</option>
-              {resources.filter((r) => r.resource_type !== 'file').map((r) => (
-                <option key={r.id} value={r.id}>{r.title}</option>
-              ))}
-            </select>
-            <button
-              onClick={handleAIAsk}
-              disabled={aiLoading}
-              className='w-full py-2 bg-yellow-400/20 text-yellow-400 rounded-lg text-sm font-medium hover:bg-yellow-400/30 transition-colors disabled:opacity-50'
-            >
-              {aiLoading ? 'Summarizing...' : 'Ask AI'}
-            </button>
-            {aiError && <p className='text-red-400 text-xs mt-2'>{aiError}</p>}
-            {aiResponse && <div className='mt-3 p-3 bg-[color:var(--bg-app)] rounded-lg text-xs text-[color:var(--text-secondary)] whitespace-pre-wrap border border-[color:var(--border-subtle)]'>{aiResponse}</div>}
-          </div>
-        )}
-      </div>
     </div>
   );
 };

@@ -6,7 +6,7 @@ from app.database import get_session
 from app.models import Resource, User
 from app.auth import get_current_user
 from app.permissions import get_membership
-from app.services.ai import summarize_text
+from app.services.ai import summarize_text, ask_assistant
 
 router = APIRouter(prefix="/ai", tags=["AI"])
 
@@ -47,3 +47,29 @@ def summarize_resource(
         raise HTTPException(status_code=502, detail="AI summarization failed. Try again.")
 
     return SummaryResponse(summary=summary)
+
+
+class AssistantRequest(BaseModel):
+    question: str
+    page_context: str
+    page_data: str = ""
+
+
+class AssistantResponse(BaseModel):
+    answer: str
+
+
+@router.post("/assistant", response_model=AssistantResponse)
+def ask_ai_assistant(
+    body: AssistantRequest,
+    current_user: User = Depends(get_current_user),
+):
+    if not body.question.strip():
+        raise HTTPException(status_code=400, detail="Question cannot be empty.")
+    try:
+        answer = ask_assistant(body.question, body.page_context, body.page_data)
+    except RuntimeError as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    except Exception:
+        raise HTTPException(status_code=502, detail="AI assistant failed. Try again.")
+    return AssistantResponse(answer=answer)

@@ -2,6 +2,7 @@
 import { ThemeSwitcher } from './ThemeSwitcher';
 import NotificationBell from './NotificationBell';
 import GroupMiniHeader from './GroupMiniHeader';
+import AIAssistant from './AIAssistant';
 
 interface Props {
   groupId: number | string;
@@ -84,6 +85,10 @@ export default function GroupTabs({ groupId, groupName, subject, memberCount, co
           );
         })}
       </div>
+      <AIAssistant
+        pageContext={tabs.find((t) => t.path === location.pathname)?.label || "Group page"}
+        pageData={`Group: ${groupName} (${subject}). Members: ${memberCount ?? "?"}. Completion rate: ${completionRate ?? "?"}%.`}
+      />
     </div>
   );
 }
