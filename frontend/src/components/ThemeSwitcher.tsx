@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import type { ThemeMode } from '../types/theme';
 import { Moon, Sun, ChevronDown } from 'lucide-react';
@@ -20,12 +20,28 @@ const labels: Record<ThemeMode, string> = {
 export const ThemeSwitcher = () => {
   const { mode, setMode } = useTheme();
   const [open, setOpen] = useState(false);
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const [pos, setPos] = useState({ top: 0, left: 0 });
 
   const allModes: ThemeMode[] = ['dark', 'light', 'midnight', 'sunset'];
+
+  useEffect(() => {
+    if (open && btnRef.current) {
+      const rect = btnRef.current.getBoundingClientRect();
+      const width = 224;
+      let left = rect.left;
+      if (left + width > window.innerWidth - 16) {
+        left = window.innerWidth - width - 16;
+      }
+      if (left < 16) left = 16;
+      setPos({ top: rect.bottom + 8, left });
+    }
+  }, [open]);
 
   return (
     <div className="relative ">
       <button
+        ref={btnRef}
         onClick={() => setOpen(!open)}
         className="p-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-200 flex items-center gap-2 "
       >
@@ -37,7 +53,7 @@ export const ThemeSwitcher = () => {
       {open && (
         <>
           <div className="fixed inset-0 z-40 " onClick={() => setOpen(false)} />
-          <div className="absolute left-0 mt-2 z-50 w-56 max-w-[calc(100vw-2rem)] p-3 rounded-xl bg-gray-900/95 border border-white/10 shadow-2xl backdrop-blur-sm ">
+          <div className="fixed z-50 w-56 p-3 rounded-xl bg-gray-900/95 border border-white/10 shadow-2xl backdrop-blur-sm " style={{ top: pos.top, left: pos.left }}>
             <div className="space-y-2 ">
               <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-2 ">Theme</h4>
               <div className="grid grid-cols-4 gap-1 ">
