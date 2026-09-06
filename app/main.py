@@ -50,10 +50,11 @@ app.include_router(ws.router)
 
 @app.get("/dev/seed")
 def run_seed(secret: str = ""):
-    if secret != "jxHKH9RifedE8v3rWbSBm6njapB_XBg48uXPYwOtayg":
+    if secret != os.getenv("DEV_SEED_SECRET"):
         return {"error": "unauthorized"}
     import subprocess
     result = subprocess.run(["python", "app/seed.py"], capture_output=True, text=True)
     return {"stdout": result.stdout, "stderr": result.stderr, "returncode": result.returncode}
+
 
 

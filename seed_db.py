@@ -1,3 +1,4 @@
+import os
 from datetime import datetime, timedelta
 from sqlmodel import Session, select
 from app.database import engine, create_db_and_tables
@@ -13,10 +14,10 @@ with Session(engine) as s:
     # ---- Users ----
     users = {}
     for email, pw in [
-        ("owner@test.com", "password123"),
-        ("alice@test.com", "password123"),
-        ("bob@test.com", "password123"),
-        ("carol@test.com", "password123"),
+        (os.getenv("SEED_OWNER_EMAIL", "owner@test.com"), os.getenv("SEED_DEFAULT_PASSWORD", "password123")),
+        (os.getenv("SEED_ALICE_EMAIL", "alice@test.com"), os.getenv("SEED_DEFAULT_PASSWORD", "password123")),
+        (os.getenv("SEED_BOB_EMAIL", "bob@test.com"), os.getenv("SEED_DEFAULT_PASSWORD", "password123")),
+        (os.getenv("SEED_CAROL_EMAIL", "carol@test.com"), os.getenv("SEED_DEFAULT_PASSWORD", "password123")),
     ]:
         existing = s.exec(select(User).where(User.email == email)).first()
         if existing:
@@ -100,4 +101,5 @@ with Session(engine) as s:
     print("Seed complete.")
     print(f"Group 1: {group1.name} (id={group1.id})")
     print(f"Group 2: {group2.name} (id={group2.id})")
-    print("Login as: owner@test.com / alice@test.com / bob@test.com / carol@test.com, password: password123")
+    print("Login as: owner/alice/bob/carol test accounts, password: SEED_DEFAULT_PASSWORD env value")
+

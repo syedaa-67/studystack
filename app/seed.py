@@ -1,3 +1,4 @@
+import os
 import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
@@ -30,7 +31,7 @@ def run():
         s.commit()
         print("Cleared data")
 
-        user = User(email="syeda@test.com", hashed_password=hash_password("syeda123"))
+        user = User(email=os.getenv("SEED_EMAIL", "test@test.com"), hashed_password=hash_password(os.getenv("SEED_PASSWORD", "changeme")))
         s.add(user)
         s.commit()
         s.refresh(user)
@@ -42,7 +43,7 @@ def run():
         s.refresh(group1); s.refresh(group2)
         print("Created groups")
 
-        owner = Member(name="Test User", email="syeda@test.com", role="admin", points=45, group_id=group1.id, user_id=user.id)
+        owner = Member(name="Test User", email=os.getenv("SEED_EMAIL", "test@test.com"), role="admin", points=45, group_id=group1.id, user_id=user.id)
         s.add(owner)
         s.commit()
         s.refresh(owner)
@@ -213,8 +214,9 @@ def run():
         print(f"Created {len(pomodoros)} pomodoro sessions")
 
         print("Seed complete!")
-        print("Login: syeda@test.com")
-        print("Password: syeda123")
+        print(f"Login: {os.getenv(\"SEED_EMAIL\", \"test@test.com\")}")
+        print(f"Password: {os.getenv(\"SEED_PASSWORD\", \"changeme\")}")
 
 if __name__ == "__main__":
     run()
+
