@@ -214,9 +214,10 @@ def run():
         print(f"Created {len(pomodoros)} pomodoro sessions")
 
         print("Seed complete!")
-        print(f"Login: {os.getenv(\"SEED_EMAIL\", \"test@test.com\")}")
-        print(f"Password: {os.getenv(\"SEED_PASSWORD\", \"changeme\")}")
+        print(f"Login: {os.getenv('SEED_EMAIL', 'test@test.com')}")
+        print(f"Password: {os.getenv('SEED_PASSWORD', 'changeme')}")
 
 if __name__ == "__main__":
     run()
+
 
