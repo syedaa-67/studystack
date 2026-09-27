@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -25,7 +25,7 @@ const Register = () => {
     setLoading(true);
 
     try {
-      await axios.post('https://studystack-z2b3.onrender.com/api/auth/register', formData);
+      await axios.post('https://studystack-z2b3.onrender.com/auth/register', formData);
       navigate('/login');
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Registration failed');
@@ -80,7 +80,7 @@ const Register = () => {
               value={formData.password}
               onChange={handleChange}
               className="w-full px-4 py-2 rounded-lg bg-card-hover border border-border-subtle text-primary focus:border-accent-yellow focus:outline-none transition-colors "
-              placeholder="••••••••"
+              placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
               required
               minLength={6}
             />
