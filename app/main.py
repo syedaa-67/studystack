@@ -1,4 +1,4 @@
-from contextlib import asynccontextmanager
+﻿from contextlib import asynccontextmanager
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import FastAPI
@@ -35,6 +35,7 @@ app.include_router(study_groups.router)
 app.include_router(members.router)
 app.include_router(deadlines.router)
 app.include_router(analytics.router)
+app.include_router(analytics.mastery_router)
 app.include_router(resources.router)
 app.include_router(ai.router)
 app.include_router(notifications.router)

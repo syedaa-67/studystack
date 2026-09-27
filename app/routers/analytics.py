@@ -87,3 +87,46 @@ def get_group_analytics(
 
 
 
+from fastapi import APIRouter, Depends
+from sqlmodel import Session, select
+from collections import defaultdict
+from typing import List
+from pydantic import BaseModel
+
+from app.database import get_session
+from app.models import Deadline, StudyGroup, Member, User
+from app.auth import get_current_user
+
+class MasterySubject(BaseModel):
+    subject: str
+    percentage: float
+
+mastery_router = APIRouter(prefix="/analytics", tags=["Mastery"])
+
+@mastery_router.get("/mastery", response_model=List[MasterySubject])
+def get_subject_mastery(
+    session: Session = Depends(get_session),
+    current_user: User = Depends(get_current_user),
+):
+    memberships = session.exec(select(Member).where(Member.user_id == current_user.id)).all()
+
+    subject_totals = defaultdict(int)
+    subject_completed = defaultdict(int)
+
+    for m in memberships:
+        group = session.get(StudyGroup, m.group_id)
+        if not group:
+            continue
+        deadlines = session.exec(select(Deadline).where(Deadline.assigned_to_id == m.id)).all()
+        for d in deadlines:
+            subject_totals[group.subject] += 1
+            if d.completed:
+                subject_completed[group.subject] += 1
+
+    result = []
+    for subject, total in subject_totals.items():
+        pct = round((subject_completed[subject] / total) * 100, 1) if total else 0.0
+        result.append(MasterySubject(subject=subject, percentage=pct))
+
+    result.sort(key=lambda x: x.percentage, reverse=True)
+    return result

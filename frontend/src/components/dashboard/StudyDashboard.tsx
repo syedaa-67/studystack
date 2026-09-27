@@ -34,6 +34,7 @@ export const StudyDashboard: React.FC<Props> = ({ groupId }) => {
   const [focusTrend, setFocusTrend] = useState<FocusTrendPoint[]>([]);
 
   const [sosSentId, setSosSentId] = useState<number | null>(null);
+  const [mastery, setMastery] = useState<{ subject: string; percentage: number }[]>([]);
 
   const loadAll = () => {
     api.get(`/study-groups/${groupId}`).then((res) => {
@@ -47,6 +48,7 @@ export const StudyDashboard: React.FC<Props> = ({ groupId }) => {
     fetchLeaderboard(groupId).then((r) => setLeaderboard(r.entries)).catch(() => {});
     listResources(groupId).then(setResources).catch(() => {});
     fetchFocusTrend(groupId).then((r) => setFocusTrend(r.trend)).catch(() => {});
+    api.get('/analytics/mastery').then((res) => setMastery(res.data)).catch(() => {});
   };
 
   useEffect(() => {
@@ -151,29 +153,23 @@ export const StudyDashboard: React.FC<Props> = ({ groupId }) => {
 
           <div className='rounded-xl p-6 transition-colors duration-300' style={{ background: 'var(--bg-card)', border: '1px solid var(--border-subtle)' }}>
             <h3 className='text-lg font-semibold mb-1'>Subject Mastery</h3>
-            <p className='text-xs text-[color:var(--text-muted)] mb-4'>Sample data - build a /mastery endpoint to make this real</p>
+            <p className='text-xs text-[color:var(--text-muted)] mb-4'>{mastery.length ? 'Based on your completed deadlines' : 'No deadline data yet'}</p>
             <ResponsiveContainer width='100%' height={220}>
               <PieChart>
                 <Pie
-                  data={[
-                    { name: 'Calculus', value: 30 },
-                    { name: 'Statistics', value: 25 },
-                    { name: 'Linear Algebra', value: 20 },
-                    { name: 'Other', value: 25 },
-                  ]}
+                  data={mastery.map((m) => ({ name: m.subject, value: m.percentage }))}
                   dataKey='value'
                   nameKey='name'
                   innerRadius={60}
                   outerRadius={85}
                   paddingAngle={3}
                 >
-                  <Cell fill='#fbbf24' />
-                  <Cell fill='#2dd4bf' />
-                  <Cell fill='#60a5fa' />
-                  <Cell fill='#f472b6' />
+                  {mastery.map((_, i) => (
+                    <Cell key={i} fill={['#fbbf24', '#2dd4bf', '#60a5fa', '#f472b6', '#a78bfa', '#34d399'][i % 6]} />
+                  ))}
                 </Pie>
                 <Tooltip contentStyle={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-subtle)', borderRadius: 8, color: 'var(--text-primary)', boxShadow: '0 4px 16px rgba(0,0,0,0.15)', padding: '4px 8px', fontSize: 11 }} itemStyle={{ fontSize: 11, padding: 0 }} formatter={(value, name) => [`${value}%`, name] as [string, string]} />
-                <Legend formatter={() => 'percentage'} iconSize={8} wrapperStyle={{ fontSize: '11px' }} />
+                <Legend iconSize={8} wrapperStyle={{ fontSize: '11px' }} />
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -281,6 +277,12 @@ export const StudyDashboard: React.FC<Props> = ({ groupId }) => {
     </div>
   );
 };
+
+
+
+
+
+
 
 
 
